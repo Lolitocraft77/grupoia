@@ -26,6 +26,73 @@ const corsHeaders = (requestOrigin: string | null) => ({
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 });
 
+const MAX_ATTEMPTS = 2;
+const ATTEMPT_TIMEOUT_MS = 10000;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+const looksLikeHtml = (body: string) => {
+  const t = body.trimStart().slice(0, 64).toLowerCase();
+  return t.startsWith("<!doctype") || t.startsWith("<html");
+};
+
+/**
+ * Calls APPS_SCRIPT_URL with browser-like headers, a per-attempt timeout, and
+ * follows Google's 302 → googleusercontent.com redirect. Retries on transient
+ * failures (network error, non-ok status, HTML, or non-JSON body) because that
+ * chain intermittently serves an HTML interstitial instead of the JSON — the
+ * cause of the intermittent 502s.
+ *
+ * Returns parsed JSON on success, or throws after MAX_ATTEMPTS with detail.
+ */
+async function fetchUpstream(): Promise<unknown> {
+  let lastErr = "";
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ATTEMPT_TIMEOUT_MS);
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: "GET",
+        redirect: "follow",
+        signal: ctrl.signal,
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (compatible; BopProxy/1.0; +https://supabase.com)",
+          "Accept": "application/json, text/plain, */*",
+        },
+      });
+      const body = await res.text();
+
+      if (!res.ok) {
+        lastErr = `status ${res.status}`;
+        console.warn(`[proxy] attempt ${attempt} non-ok: ${lastErr}`);
+        await sleep(250 * attempt);
+        continue;
+      }
+      if (looksLikeHtml(body)) {
+        lastErr = "received HTML (redirect interstitial)";
+        console.warn(`[proxy] attempt ${attempt}: ${lastErr}`);
+        await sleep(250 * attempt);
+        continue;
+      }
+      try {
+        return JSON.parse(body);
+      } catch {
+        lastErr = `non-JSON body (snippet: ${body.slice(0, 120)})`;
+        console.warn(`[proxy] attempt ${attempt}: ${lastErr}`);
+        await sleep(250 * attempt);
+        continue;
+      }
+    } catch (e) {
+      lastErr = e instanceof Error ? e.message : String(e);
+      console.warn(`[proxy] attempt ${attempt} fetch error: ${lastErr}`);
+      await sleep(250 * attempt);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  throw new Error(`upstream failed after ${MAX_ATTEMPTS} attempts: ${lastErr}`);
+}
+
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin");
   const headers = corsHeaders(origin);
@@ -45,21 +112,9 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const upstream = await fetch(APPS_SCRIPT_URL, {
-      method: "GET",
-      redirect: "follow",
-    });
-    if (!upstream.ok) {
-      throw new Error(`Apps Script responded ${upstream.status}`);
-    }
-    const text = await upstream.text();
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(text);
-    } catch {
-      throw new Error("Apps Script returned non-JSON");
-    }
+    const parsed = await fetchUpstream();
 
+    // Apps Script reported an explicit error → real failure, not transient.
     if (
       parsed &&
       typeof parsed === "object" &&
@@ -94,7 +149,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    return new Response(text, {
+    return new Response(JSON.stringify(parsed), {
       headers: {
         ...headers,
         "Content-Type": "application/json",
@@ -103,6 +158,7 @@ Deno.serve(async (req) => {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
+    console.error(`[proxy] ${message}`);
     return new Response(JSON.stringify({ error: message }), {
       status: 502,
       headers: { ...headers, "Content-Type": "application/json" },
