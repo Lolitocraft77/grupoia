@@ -8,10 +8,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        gold: "btn-primary",     // legacy alias from the original repo
         primary: "btn-primary",
         secondary: "btn-secondary",
-        burgundy: "btn-secondary",
         ghost: "btn-ghost",
         danger: "btn-danger",
       },

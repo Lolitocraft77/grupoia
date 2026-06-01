@@ -1,4 +1,4 @@
--- DolarDashboard — initial schema.
+-- BOP — initial schema.
 -- Idempotent: safe to re-run.
 -- Schema preserved from the original Vegas Sales repo so any prior backend
 -- (or Apps Script) keeps working without changes.

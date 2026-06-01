@@ -20,21 +20,21 @@ export default function AdminDashboard() {
   const [tab, setTab] = useState<Tab>("agents");
 
   return (
-    <div className="bg-vault-pattern relative h-full w-full overflow-auto p-6 text-vault-platinum">
+    <div className="bop-pattern relative h-full w-full overflow-auto p-6 text-bop-platinum">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <BrandMark size={48} />
           <div>
-            <p className="font-sans text-xs uppercase tracking-[0.4em] text-vault-blue/70">
-              Admin Console
+            <p className="font-sans text-xs uppercase tracking-[0.4em] text-bop-chrome/70">
+              Administración
             </p>
-            <h1 className="font-display text-3xl text-cyan-glow">
+            <h1 className="font-display text-3xl text-chrome-glow">
               {BRAND.name}
             </h1>
           </div>
         </div>
         <div className="flex items-center gap-3 text-sm">
-          <span className="text-vault-silver/70">{user?.email}</span>
+          <span className="text-bop-silver/70">{user?.email}</span>
           <Link
             to="/"
             target="_blank"
@@ -56,7 +56,7 @@ export default function AdminDashboard() {
       <nav
         role="tablist"
         aria-label="Admin sections"
-        className="mb-6 flex gap-1 border-b border-vault-blue/30"
+        className="mb-6 flex gap-1 border-b border-bop-chrome/30"
       >
         {TABS.map((t) => {
           const active = tab === t.id;
@@ -70,8 +70,8 @@ export default function AdminDashboard() {
               className={
                 "relative px-5 py-3 font-display text-sm uppercase tracking-widest transition-colors " +
                 (active
-                  ? "text-cyan-glow"
-                  : "text-vault-silver/55 hover:text-vault-platinum")
+                  ? "text-chrome-glow"
+                  : "text-bop-silver/55 hover:text-bop-platinum")
               }
             >
               {t.label}

@@ -31,7 +31,7 @@
   50% { transform: translateY(-6px); }
 }
 
-@keyframes vault-scan {
+@keyframes bop-scan {
   0%   { transform: translateY(-110%); opacity: 0; }
   10%  { opacity: 0.45; }
   90%  { opacity: 0.45; }
@@ -54,20 +54,20 @@
   75% { transform: translate3d(-1px, 1.5px, 0); }
 }
 
-/* Shockwave ring at the muzzle on each fire wave. */
+/* Shockwave ring at the emitter on each stream wave. */
 @keyframes shockwave {
   0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0.9; }
   100% { transform: translate(-50%, -50%) scale(2.6); opacity: 0; }
 }
 
-/* Tiny sparks emerging from the muzzle. */
+/* Tiny sparks emerging from the emitter. */
 @keyframes spark-rise {
   0%   { transform: translate(-50%, 0) scale(1); opacity: 1; }
   100% { transform: translate(calc(-50% + var(--dx, 0px)), -120px) scale(0); opacity: 0; }
 }
 
-/* Heat shimmer / muzzle haze during fire. */
-@keyframes muzzle-haze {
+/* Heat shimmer / emitter haze during stream. */
+@keyframes emitter-haze {
   0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 0.32; }
   50%      { transform: translate(-50%, -8px) scale(1.18); opacity: 0.55; }
 }
@@ -79,8 +79,8 @@
   100% { transform: translate3d(var(--dx, 0px), 95vh, 0) rotate(540deg); opacity: 0; }
 }
 
-/* Money rain — bills falling from above, filling the entire viewport. */
-@keyframes bill-rain {
+/* Token rain — elements falling from above, filling the entire viewport. */
+@keyframes token-rain {
   0% {
     transform: translate3d(0, -20vh, 0) rotate(var(--rot, 0deg));
     opacity: 0;
@@ -113,8 +113,8 @@
   animation: logo-float 4s ease-in-out infinite;
   will-change: transform;
 }
-.anim-vault-scan {
-  animation: vault-scan 6s linear infinite;
+.anim-bop-scan {
+  animation: bop-scan 6s linear infinite;
   will-change: transform, opacity;
 }
 .anim-camera-shake {
@@ -132,16 +132,16 @@
   animation: spark-rise 600ms ease-out forwards;
   will-change: transform, opacity;
 }
-.anim-muzzle-haze {
-  animation: muzzle-haze 400ms ease-in-out infinite;
+.anim-emitter-haze {
+  animation: emitter-haze 400ms ease-in-out infinite;
   will-change: transform, opacity;
 }
 .anim-confetti {
   animation: confetti-fall linear forwards;
   will-change: transform, opacity;
 }
-.anim-bill-rain {
-  animation: bill-rain linear forwards;
+.anim-token-rain {
+  animation: token-rain linear forwards;
   will-change: transform, opacity;
 }
 
@@ -159,9 +159,9 @@
   .anim-marquee-bulb,
   .anim-particle,
   .anim-logo-float,
-  .anim-vault-scan,
+  .anim-bop-scan,
   .anim-camera-rumble,
-  .anim-muzzle-haze {
+  .anim-emitter-haze {
     animation: none !important;
   }
 }

@@ -142,10 +142,10 @@ export function TeamsTab() {
     <div>
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl uppercase tracking-widest text-cyan-glow">
+          <h2 className="font-display text-2xl uppercase tracking-widest text-chrome-glow">
             Mesas
           </h2>
-          <p className="text-sm text-vault-silver/60">
+          <p className="text-sm text-bop-silver/60">
             {teams.length} mesa{teams.length === 1 ? "" : "s"} configurada
             {teams.length === 1 ? "" : "s"}
           </p>
@@ -168,8 +168,8 @@ export function TeamsTab() {
         </p>
       )}
 
-      <div className="vault-card space-y-3 p-4">
-        {loading && <p className="text-vault-silver/60">Cargando…</p>}
+      <div className="bop-card space-y-3 p-4">
+        {loading && <p className="text-bop-silver/60">Cargando…</p>}
 
         {creating && (
           <TeamRowEdit
@@ -183,7 +183,7 @@ export function TeamsTab() {
         )}
 
         {!loading && !creating && teams.length === 0 && (
-          <p className="py-6 text-center text-vault-silver/60">
+          <p className="py-6 text-center text-bop-silver/60">
             Sin mesas. Agregá la primera.
           </p>
         )}

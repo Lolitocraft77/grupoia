@@ -2,29 +2,31 @@ import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
 
 /**
- * Vault palette — black/anthracite + electric blue + silver/platinum metallic.
+ * BOP palette — monochrome premium: deep black + brushed silver/platinum.
  *
- * `vault.*` is the new identity (banknote engraving + tech-blue).
- * `kriptex.*` is kept as a backwards-compat alias mapping to the new tokens
- *   so any leftover className from the original repo still resolves.
+ * A single, clean token system under the `bop.*` namespace. No accent colour:
+ * the "accent" ramp is metallic chrome (silver gradient). Functional states
+ * (`positive`, `alert`) carry the only, heavily desaturated, hint of tint.
  */
-const vault = {
-  ink: "#03060d",         // base background, deepest black
-  obsidian: "#070b16",    // body fill
-  graphite: "#0c121f",    // surface
-  steel: "#141d2f",       // elevated surface
-  iron: "#1d2840",        // borders / hover
-  silver: "#cfd6e4",      // metallic text
-  platinum: "#e7ecf5",    // brightest text
-  // Electric blue ramp — high contrast tech accent.
-  blue: "#3aa6ff",
-  "blue-bright": "#6cc1ff",
-  "blue-deep": "#0a5ec2",
-  cyan: "#5eeaff",
-  // Premium accents inspired by the engraved banknote.
-  parchment: "#e9d9b3",   // warm aged paper highlight (very subtle)
-  emerald: "#1bbf8a",     // confirmation / win
-  danger: "#ff4d6a",
+const bop = {
+  // Background / surface ramp (darkest → lightest)
+  void: "#050506",        // base background, deepest black
+  onyx: "#0a0b0d",        // body fill
+  graphite: "#101216",    // surface
+  slate: "#181b21",       // elevated surface
+  ash: "#262a31",         // borders / hover
+  // Metallic text
+  silver: "#b7bcc4",      // secondary metallic text
+  platinum: "#eceef1",    // brightest text
+  // Metallic accent ramp (brushed chrome — replaces any colour accent)
+  chrome: "#c4c9d1",
+  "chrome-light": "#e9ecf0",
+  "chrome-dark": "#7c818b",
+  gleam: "#f4f6f8",       // specular highlight (near white)
+  mist: "#8a8f98",        // muted neutral metal
+  // Functional states — the only, minimal, desaturated tints.
+  positive: "#a9b3ad",    // silver-green: target reached / saved
+  alert: "#c79090",       // muted rose: errors / danger
 };
 
 export default {
@@ -32,37 +34,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        vault,
-        // Backwards-compat aliases — same shape as the original kriptex palette
-        // pointing to the new vault tokens. Lets any stale className resolve.
-        kriptex: {
-          navy: vault.obsidian,
-          "navy-deep": vault.ink,
-          "navy-mid": vault.graphite,
-          steel: vault.steel,
-          orange: vault.blue,
-          "orange-bright": vault["blue-bright"],
-          "orange-deep": vault["blue-deep"],
-          ember: vault["blue-deep"],
-          cyan: vault.cyan,
-          "cyan-deep": vault["blue-deep"],
-          cream: vault.platinum,
-          danger: vault.danger,
-          success: vault.emerald,
-        },
+        bop,
       },
       fontFamily: {
-        display: ['"Cinzel"', '"Playfair Display"', "serif"],
+        display: ['"Jost"', '"Inter"', "system-ui", "sans-serif"],
         digital: ['"JetBrains Mono"', '"IBM Plex Mono"', "monospace"],
         sans: ['"Inter"', '"Manrope"', "system-ui", "sans-serif"],
       },
       backgroundImage: {
-        "vault-grid":
-          "linear-gradient(rgba(58,166,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(58,166,255,0.08) 1px, transparent 1px)",
+        "bop-grid":
+          "linear-gradient(rgba(196,201,209,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(196,201,209,0.05) 1px, transparent 1px)",
       },
       boxShadow: {
-        "vault-glow": "0 0 28px rgba(58,166,255,0.35)",
-        "vault-rim": "inset 0 0 0 1px rgba(207,214,228,0.18)",
+        "bop-glow": "0 0 24px rgba(196,201,209,0.22)",
+        "bop-rim": "inset 0 0 0 1px rgba(183,188,196,0.18)",
       },
     },
   },

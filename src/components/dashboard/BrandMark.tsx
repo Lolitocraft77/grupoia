@@ -9,9 +9,9 @@ interface BrandMarkProps {
 }
 
 /**
- * Banknote-seal style monogram fallback. Used when no logo image is set
- * via VITE_BRAND_LOGO / branding.ts. Drop-in replacement: keeps the same
- * 100×100 viewBox so other components don't need to know about it.
+ * Silver crescent monogram — the fallback mark used when no logo image is set
+ * via VITE_BRAND_LOGO / branding.ts. Keeps a 100×100 viewBox so callers don't
+ * need to know about it.
  */
 function MonogramSvg({ size, label }: { size: number; label: string }) {
   return (
@@ -23,32 +23,23 @@ function MonogramSvg({ size, label }: { size: number; label: string }) {
       aria-label={label}
     >
       <defs>
-        <linearGradient id="brand-mono-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6cc1ff" />
-          <stop offset="100%" stopColor="#0a5ec2" />
+        <linearGradient id="brand-silver" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#f4f6f8" />
+          <stop offset="50%" stopColor="#c4c9d1" />
+          <stop offset="100%" stopColor="#7c818b" />
         </linearGradient>
-        <linearGradient id="brand-mono-silver" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#e7ecf5" />
-          <stop offset="100%" stopColor="#9aa3b5" />
-        </linearGradient>
+        <mask id="brand-crescent">
+          <circle cx="50" cy="50" r="42" fill="white" />
+          <circle cx="64" cy="43" r="35" fill="black" />
+        </mask>
       </defs>
-      {/* Outer disk */}
-      <circle cx="50" cy="50" r="46" fill="rgba(7, 11, 22, 0.92)" stroke="url(#brand-mono-fill)" strokeWidth="2.5" />
-      {/* Engraved ring */}
-      <circle cx="50" cy="50" r="38" fill="none" stroke="url(#brand-mono-silver)" strokeOpacity="0.4" strokeWidth="1" strokeDasharray="2 3" />
-      {/* Inner ring */}
-      <circle cx="50" cy="50" r="30" fill="none" stroke="url(#brand-mono-fill)" strokeOpacity="0.5" strokeWidth="1" />
-      <text
-        x="50"
-        y={label.length === 1 ? 65 : 62}
-        textAnchor="middle"
-        fontFamily="Cinzel, Playfair Display, serif"
-        fontSize={label.length === 1 ? 46 : 30}
-        fontWeight="900"
-        fill="url(#brand-mono-fill)"
-      >
-        {label.slice(0, 3).toUpperCase()}
-      </text>
+      {/* Brushed-silver crescent */}
+      <rect
+        width="100"
+        height="100"
+        fill="url(#brand-silver)"
+        mask="url(#brand-crescent)"
+      />
     </svg>
   );
 }
@@ -70,7 +61,7 @@ export function BrandMark({
         className="relative"
         style={{
           filter:
-            "drop-shadow(0 0 12px rgba(58, 166, 255, 0.45)) drop-shadow(0 0 24px rgba(207, 214, 228, 0.12))",
+            "drop-shadow(0 0 12px rgba(196, 201, 209, 0.4)) drop-shadow(0 0 24px rgba(236, 238, 241, 0.12))",
         }}
       >
         {BRAND.logoPath ? (
@@ -78,7 +69,7 @@ export function BrandMark({
             src={BRAND.logoPath}
             alt={BRAND.name}
             width={size}
-            height={Math.round(size * 0.55)}
+            height={size}
             style={{ width: size, height: "auto", objectFit: "contain" }}
             onError={(e) => {
               // If the configured logo can't load, hide it so nothing visual breaks.
@@ -92,8 +83,8 @@ export function BrandMark({
       </div>
       {showWordmark && (
         <span
-          className="font-display tracking-[0.35em] text-cyan-glow"
-          style={{ fontSize: Math.max(16, size * 0.16) }}
+          className="font-display tracking-[0.35em] text-chrome-glow"
+          style={{ fontSize: Math.max(15, size * 0.14) }}
         >
           {BRAND.name.toUpperCase()}
         </span>

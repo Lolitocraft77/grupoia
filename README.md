@@ -1,13 +1,13 @@
-# DolarDashboard — Trading Vault
+# Business Operations 12:12
 
-Dashboard de ventas en tiempo real con identidad **money machine + tech oscuro**: negro/antracita, azul eléctrico, plateado metálico, ornamentación de billete grabado. Cuando un agente cierra una venta, se dispara una **animación de cañón de dinero** con foto, monto, billetes con física suave y 3 SFX (arranque mecánico → ráfaga de cash → stinger de confirmación).
+Dashboard de ventas en tiempo real con identidad **monocromática premium**: negro profundo, plata cepillada y platino, tipografía limpia en mayúsculas con tracking amplio. Cuando un agente cierra una venta, se dispara una **animación de reconocimiento** con foto, monto, partículas con física suave y 3 SFX (arranque mecánico → ráfaga → stinger de confirmación).
 
-> **Misma arquitectura, contratos y rutas** que el repo origen ([ElGundamPa/Sale](https://github.com/ElGundamPa/Sale.git)). Sólo cambia identidad visual y la animación/SFX del jackpot.
+> **Misma arquitectura, contratos y rutas** que el repo origen. Sólo cambia la identidad visual y la animación/SFX del reconocimiento.
 
 ## Stack
 
 - React 18 + TypeScript + Vite
-- React Router v6
+- React Router v7
 - Tailwind CSS
 - Framer Motion + CSS keyframes
 - Supabase (Auth + Postgres + Storage + Edge Functions)
@@ -42,18 +42,11 @@ Si no hay Supabase configurado todavía, el dashboard cae a `mockTeams` y la ani
 5. **Crear el usuario admin**:
    - *Authentication → Users → Add user* → email + password → marcar *Auto Confirm*.
    - No hay signup público; sólo este usuario puede entrar a `/admin`.
-6. **Desplegar la Edge Function** (con la URL del Apps Script como secret).
-
-   El deployment actual del Apps Script es:
-
-   ```
-   ID  : AKfycbwKp8YrPbAQjApOnMhClk7DSVNLp6y4BzepykCAZqW13AMeuKubgfOXpdUFV1lmVtm6Dg
-   URL : https://script.google.com/macros/s/AKfycbwKp8YrPbAQjApOnMhClk7DSVNLp6y4BzepykCAZqW13AMeuKubgfOXpdUFV1lmVtm6Dg/exec
-   ```
+6. **Desplegar la Edge Function** (con la URL del Apps Script como secret):
 
    ```bash
    supabase link --project-ref <your-project-ref>
-   supabase secrets set APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwKp8YrPbAQjApOnMhClk7DSVNLp6y4BzepykCAZqW13AMeuKubgfOXpdUFV1lmVtm6Dg/exec"
+   supabase secrets set APPS_SCRIPT_URL="https://script.google.com/macros/s/.../exec"
    supabase functions deploy google-sheets-proxy --no-verify-jwt
    ```
 
@@ -105,9 +98,9 @@ src/
 │   ├── AdminDashboard.tsx
 │   └── NotFound.tsx
 ├── components/
-│   ├── dashboard/             # VaultBackground, StartScreen, DashboardView,
-│   │                          # TeamCard, AgentRow, JackpotOverlay (money cannon),
-│   │                          # NeonText, BrandMark, HexBadge
+│   ├── dashboard/             # AmbientBackground, StartScreen, DashboardView,
+│   │                          # TeamCard, AgentRow, SpotlightOverlay (reconocimiento),
+│   │                          # NeonText, BrandMark, RankBadge
 │   ├── admin/                 # ProtectedRoute, AgentsTab, TeamsTab,
 │   │                          # SettingsTab, AgentDialog
 │   └── ui/button.tsx
@@ -120,19 +113,18 @@ src/
 │   ├── useTeamsAdmin.ts
 │   ├── useGoogleSheetData.ts
 │   ├── useAudioPlayer.ts
-│   └── useJackpotSfx.ts       # money-cannon SFX (mechanical / cashBurst / winStinger)
+│   └── useSpotlightSfx.ts     # SFX del reconocimiento (mechanical / burst / stinger)
 ├── lib/                       # supabase.ts, buildTeams.ts, utils.ts, logger.ts
 ├── types/                     # index.ts (UI), database.ts (rows)
 ├── config/                    # constants.ts, branding.ts, mockData.ts
 ├── styles/animations.css
-├── index.css                  # vault palette, banknote frame, premium buttons
+├── index.css                  # paleta bop, marco grabado, botones premium
 └── main.tsx
 
 public/
-├── bg-vault.svg               # background con grid azul + spotlights
-├── bill.svg                   # billete decorativo
+├── bg-bop.svg                 # background con grid plateado + spotlights
 ├── favicon.svg
-├── logos/dolar-dashboard.svg
+├── logos/bop.svg
 └── sounds/                    # opcional — drop-in MP3 que reemplazan los SFX sintetizados
 
 supabase/
@@ -147,10 +139,10 @@ supabase/
 ```
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
-VITE_BRAND_NAME=DolarDashboard
-VITE_BRAND_LOGO=/logos/dolar-dashboard.svg
-VITE_BRAND_TAGLINE=Money machine · Trading vault · Real time
-VITE_BRAND_MONOGRAM=$
+VITE_BRAND_NAME=Business Operations 12:12
+VITE_BRAND_LOGO=/logos/bop.svg
+VITE_BRAND_TAGLINE=Operaciones · Rendimiento · Tiempo real
+VITE_BRAND_MONOGRAM=BOP
 ```
 
 ---
@@ -172,31 +164,31 @@ Editá `.env` (o `src/config/branding.ts` si querés bakearlo en el código):
 
 ### 2) Logo
 
-Reemplazá `public/logos/dolar-dashboard.svg` o apuntá `VITE_BRAND_LOGO` a otro path. Si la imagen no carga, el componente `BrandMark` cae automáticamente al monograma SVG.
+Reemplazá `public/logos/bop.svg` o apuntá `VITE_BRAND_LOGO` a otro path. Si la imagen no carga, el componente `BrandMark` cae automáticamente al monograma SVG (la luna creciente plateada).
 
 ### 3) Paleta
 
-La paleta vive en dos lugares:
+La paleta vive en dos lugares y deben quedar en sync:
 
-- **Tokens CSS** en `src/index.css` (`:root { --vault-* }`). Cambiá esos valores y todo el dashboard sigue.
-- **Tailwind** en `tailwind.config.ts` (`colors.vault`).
+- **Tokens CSS** en `src/index.css` (`:root { --bop-* }`). Cambiá esos valores y todo el dashboard sigue.
+- **Tailwind** en `tailwind.config.ts` (`colors.bop`).
 
-Ambos deben quedar en sync. Para una marca completamente nueva normalmente solo se tocan:
+Tokens principales:
 
-- `--vault-blue`, `--vault-blue-bright`, `--vault-blue-deep`  ← color de acento principal
-- `--vault-silver`, `--vault-platinum`                        ← texto / metales
-- `--vault-ink`, `--vault-obsidian`                            ← fondo
-- `colors.vault.*` correspondiente en Tailwind
+- `--bop-chrome`, `--bop-chrome-light`, `--bop-chrome-dark`  ← acento metálico (plata)
+- `--bop-silver`, `--bop-platinum`                            ← texto / metales
+- `--bop-void`, `--bop-onyx`                                  ← fondo
+- `colors.bop.*` correspondiente en Tailwind
 
 ### 4) Fondo
 
-`public/bg-vault.svg` es el fondo. Si querés otro, dejá el archivo con el mismo nombre o cambiá `--bg-image` en `src/index.css`.
+`public/bg-bop.svg` es el fondo. Si querés otro, dejá el archivo con el mismo nombre o cambiá `--bg-image` en `src/index.css`.
 
 ### 5) Tipografía
 
 Las families se cargan desde Google Fonts en `index.html`. Cambiá:
 
-- Display (banknote serif): `Cinzel` / `Playfair Display`
+- Display (limpia, mayúsculas, tracking amplio): `Jost`
 - Sans (UI): `Inter` / `Manrope`
 - Digital (counters): `JetBrains Mono` / `IBM Plex Mono`
 
@@ -206,30 +198,22 @@ Después actualizá `tailwind.config.ts` (`fontFamily`) y los stacks en `src/ind
 
 ## Guía para cambiar sonidos / animaciones
 
-### Sonidos del cañón de dinero
+### Sonidos del reconocimiento
 
 Por defecto los 3 SFX se sintetizan en runtime con la Web Audio API (sin archivos binarios → 0 bytes en producción).
 
-Para usar audio real, dejá MP3 en `/public/sounds/`:
-
-| Archivo | Cuándo suena |
-|---|---|
-| `sfx-mechanical-start.mp3` | Stage 1 — “lock and load” del cañón |
-| `sfx-cash-burst.mp3` | Stage 2 — billetes saliendo |
-| `sfx-win-stinger.mp3` | Stage 3 — confirmación premium |
-
-`useJackpotSfx` los detecta automáticamente y los prefiere sobre el sintetizador. Si un archivo no existe o está corrupto, se cae al synth (nunca bloquea la UI).
+`useSpotlightSfx` expone `mechanical()`, `burst()` y `stinger()`. Editá las frecuencias, duraciones y filtros directamente en `src/hooks/useSpotlightSfx.ts`.
 
 **Volumen y mute** son configurables en `/admin → Configuración → Audio`. Persisten en localStorage:
-- `dolar.audio.muted` (`"1"` / `"0"`)
-- `dolar.audio.master` (número 0–1)
+- `bop.audio.muted` (`"1"` / `"0"`)
+- `bop.audio.master` (número 0–1)
 
 ### Animación
 
-- Tiempos por etapa: `src/config/constants.ts` (`CANNON_FLASH_MS`, `CANNON_ARM_MS`, `CANNON_FIRE_MS`, `CANNON_REVEAL_MS`).
-- Duración total: `app_settings.jackpot_duration_seconds` en Supabase (editable desde `/admin`).
-- Densidad de billetes y modo fallback: `useReducedFx()` en `JackpotOverlay.tsx` (detecta `prefers-reduced-motion`, cores ≤ 4 o memoria ≤ 4 GB → reduce a 18 billetes en vez de 44).
-- Geometría del cañón / billete: SVG inline al final de `JackpotOverlay.tsx` (sin dependencias externas).
+- Tiempos por etapa: `src/config/constants.ts` (`STAGE_FLASH_MS`, `STAGE_ARM_MS`, `STAGE_STREAM_MS`, `STAGE_REVEAL_MS`).
+- Duración total: `app_settings.spotlight_duration_seconds` en Supabase (editable desde `/admin`).
+- Densidad de partículas y modo fallback: `useReducedFx()` en `SpotlightOverlay.tsx` (detecta `prefers-reduced-motion`, cores ≤ 4 o memoria ≤ 4 GB → reduce el número de elementos).
+- Geometría del emisor / token: SVG inline al final de `SpotlightOverlay.tsx` (sin dependencias externas).
 
 ---
 
@@ -238,8 +222,8 @@ Para usar audio real, dejá MP3 en `/public/sounds/`:
 - [ ] `/` carga el dashboard público (con mock o datos reales).
 - [ ] `/admin/login` autentica con Supabase.
 - [ ] `/admin` muestra tabs *Agentes*, *Mesas*, *Configuración* y exige sesión.
-- [ ] Animación de **money cannon** dispara con flash azul, billetes con física, contador y camera shake.
-- [ ] Los 3 SFX (mechanical / cashBurst / winStinger) suenan y respetan mute + volumen.
+- [ ] La animación de reconocimiento dispara con flash plateado, partículas con física, contador y camera shake.
+- [ ] Los 3 SFX (mechanical / burst / stinger) suenan y respetan mute + volumen.
 - [ ] Cola serial: dos ventas seguidas no encinan animaciones.
 - [ ] `npm run build` termina sin errores.
 - [ ] Mobile y desktop responsivos.
@@ -250,8 +234,8 @@ Para usar audio real, dejá MP3 en `/public/sounds/`:
 
 - Misma estructura de tablas (`teams`, `agents`, `app_settings`) y nombres de campos.
 - Mismo contrato Apps Script (`teams[]`, `newSales[]`, `submittedAt`).
-- Misma cola serial de jackpots, hidratación de `processed` desde localStorage, y dedupe por `agentName|submittedAt|value`.
+- Misma cola serial de reconocimientos, hidratación de `processed` desde localStorage, y dedupe por `agentName|submittedAt|value`.
 - Mismas rutas: `/`, `/admin/login`, `/admin`, `/404`.
 - Misma Edge Function (`google-sheets-proxy`) con CORS configurable y validación de payload.
 
-Si comparás este proyecto con el original, **se siente el mismo producto en lógica y UX**, pero con identidad visual y audiovisual totalmente nueva basada en *dinero premium + tech oscuro*.
+Si comparás este proyecto con el original, **se siente el mismo producto en lógica y UX**, pero con identidad visual y audiovisual totalmente nueva: *monocromática premium, plata sobre negro*.

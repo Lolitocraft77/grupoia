@@ -315,21 +315,21 @@ export function AgentDialog({
             </div>
           </div>
 
-          <hr className="my-6 border-vault-blue/15" />
+          <hr className="my-6 border-bop-chrome/15" />
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div>
               <p className="field-label">Foto</p>
               <div className="flex items-center gap-3">
                 <div
-                  className="h-24 w-24 shrink-0 overflow-hidden rounded-md border border-vault-blue/60 bg-[var(--bg-elevated)]"
+                  className="h-24 w-24 shrink-0 overflow-hidden rounded-md border border-bop-chrome/60 bg-[var(--bg-elevated)]"
                   role="img"
                   aria-label={photoUrl ? `Foto de ${name}` : "Sin foto"}
                 >
                   {photoUrl ? (
                     <img src={photoUrl} alt="" className="h-full w-full object-cover" />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-3xl text-vault-blue/70">
+                    <div className="flex h-full w-full items-center justify-center text-3xl text-bop-chrome/70">
                       ?
                     </div>
                   )}

@@ -1,52 +1,51 @@
 import { cn } from "@/lib/utils";
 
-interface HexBadgeProps {
+interface RankBadgeProps {
   rank: 1 | 2 | 3 | number;
   size?: number;
   className?: string;
 }
 
 /**
- * Vault-styled rank badge (banknote-seal feel) — circle with engraved
- * inner ring + numeral. Top 3 ranks use the brand silver/blue/deep-blue
- * gradient; everything else falls back to a steel default.
+ * Rank badge — engraved disc with an inner ring + numeral. Top 3 ranks use
+ * the brushed-silver brand ramp; everything else falls back to a slate default.
  */
 const PALETTE: Record<
   number,
   { fill: string; stroke: string; glow: string; text: string; ring: string }
 > = {
   1: {
-    fill: "#0a5ec2",
-    stroke: "#e7ecf5",
-    glow: "#3aa6ff",
-    text: "#03060d",
-    ring: "#cfd6e4",
+    fill: "#7c818b",
+    stroke: "#f4f6f8",
+    glow: "#e9ecf0",
+    text: "#050506",
+    ring: "#eceef1",
   },
   2: {
-    fill: "#141d2f",
-    stroke: "#cfd6e4",
-    glow: "#cfd6e4",
-    text: "#e7ecf5",
-    ring: "#cfd6e4",
+    fill: "#181b21",
+    stroke: "#c4c9d1",
+    glow: "#c4c9d1",
+    text: "#eceef1",
+    ring: "#c4c9d1",
   },
   3: {
-    fill: "#070b16",
-    stroke: "#3aa6ff",
-    glow: "#3aa6ff",
-    text: "#cfd6e4",
-    ring: "#3aa6ff",
+    fill: "#0a0b0d",
+    stroke: "#8a8f98",
+    glow: "#b7bcc4",
+    text: "#c4c9d1",
+    ring: "#8a8f98",
   },
 };
 
 const DEFAULT = {
-  fill: "#0c121f",
-  stroke: "#3aa6ff",
-  glow: "#3aa6ff",
-  text: "#cfd6e4",
-  ring: "#3aa6ff",
+  fill: "#101216",
+  stroke: "#7c818b",
+  glow: "#8a8f98",
+  text: "#c4c9d1",
+  ring: "#7c818b",
 };
 
-export function HexBadge({ rank, size = 48, className }: HexBadgeProps) {
+export function RankBadge({ rank, size = 48, className }: RankBadgeProps) {
   const p = PALETTE[rank] ?? DEFAULT;
   return (
     <svg
@@ -59,7 +58,7 @@ export function HexBadge({ rank, size = 48, className }: HexBadgeProps) {
       }}
       aria-hidden
     >
-      {/* Outer banknote seal */}
+      {/* Outer disc */}
       <circle cx="50" cy="50" r="46" fill={p.fill} stroke={p.stroke} strokeWidth="2.5" />
       {/* Inner engraved ring */}
       <circle
@@ -77,9 +76,9 @@ export function HexBadge({ rank, size = 48, className }: HexBadgeProps) {
         x="50"
         y="62"
         textAnchor="middle"
-        fontFamily="Cinzel, Playfair Display, serif"
+        fontFamily="Jost, Inter, sans-serif"
         fontSize="36"
-        fontWeight="900"
+        fontWeight="700"
         fill={p.text}
       >
         {rank}

@@ -29,17 +29,17 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="bg-vault-pattern relative flex h-full w-full items-center justify-center overflow-hidden">
+    <div className="bop-pattern relative flex h-full w-full items-center justify-center overflow-hidden">
       <form
         onSubmit={onSubmit}
-        className="vault-card relative w-full max-w-sm p-8"
+        className="bop-card relative w-full max-w-sm p-8"
         noValidate
       >
         <div className="mb-6 flex justify-center">
           <BrandMark size={88} showWordmark />
         </div>
-        <h1 className="mb-6 text-center font-display text-2xl uppercase tracking-widest text-cyan-glow">
-          Admin Console
+        <h1 className="mb-6 text-center font-display text-2xl uppercase tracking-widest text-chrome-glow">
+          Acceso administración
         </h1>
 
         <div className="mb-4">
@@ -87,7 +87,7 @@ export default function AdminLogin() {
           disabled={submitting}
           className="btn btn-primary w-full"
         >
-          {submitting ? "Signing in…" : "Enter"}
+          {submitting ? "Accediendo…" : "Entrar"}
         </button>
       </form>
     </div>

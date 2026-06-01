@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAppSettingsAdmin } from "@/hooks/useAppSettingsAdmin";
-import { useJackpotSfx } from "@/hooks/useJackpotSfx";
+import { useSpotlightSfx } from "@/hooks/useSpotlightSfx";
 
 export function SettingsTab() {
   const { settings, loading, error, updateSetting } = useAppSettingsAdmin();
-  const sfx = useJackpotSfx();
+  const sfx = useSpotlightSfx();
   const [polling, setPolling] = useState(10);
   const [duration, setDuration] = useState(10);
   const [savedKey, setSavedKey] = useState<string | null>(null);
@@ -14,11 +14,11 @@ export function SettingsTab() {
 
   useEffect(() => {
     setPolling(settings.polling_interval_seconds);
-    setDuration(settings.jackpot_duration_seconds);
+    setDuration(settings.spotlight_duration_seconds);
   }, [settings]);
 
   const save = async (
-    key: "polling_interval_seconds" | "jackpot_duration_seconds",
+    key: "polling_interval_seconds" | "spotlight_duration_seconds",
     value: number,
   ) => {
     setBusyKey(key);
@@ -36,10 +36,10 @@ export function SettingsTab() {
   return (
     <div>
       <div className="mb-4">
-        <h2 className="font-display text-2xl uppercase tracking-widest text-cyan-glow">
+        <h2 className="font-display text-2xl uppercase tracking-widest text-chrome-glow">
           Configuración
         </h2>
-        <p className="text-sm text-vault-silver/60">
+        <p className="text-sm text-bop-silver/60">
           Tunables del dashboard. Los cambios se aplican en vivo.
         </p>
       </div>
@@ -50,7 +50,7 @@ export function SettingsTab() {
         </p>
       )}
 
-      <div className="vault-card grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
+      <div className="bop-card grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
         <div>
           <label htmlFor="cfg-polling" className="field-label">
             Intervalo de polling (s)
@@ -89,7 +89,7 @@ export function SettingsTab() {
 
         <div>
           <label htmlFor="cfg-duration" className="field-label">
-            Duración del jackpot (s)
+            Duración del destacado (s)
           </label>
           <div className="flex flex-wrap gap-2">
             <input
@@ -104,13 +104,13 @@ export function SettingsTab() {
             />
             <button
               type="button"
-              onClick={() => save("jackpot_duration_seconds", duration)}
-              disabled={busyKey === "jackpot_duration_seconds"}
+              onClick={() => save("spotlight_duration_seconds", duration)}
+              disabled={busyKey === "spotlight_duration_seconds"}
               className="btn btn-primary btn-sm"
             >
-              {busyKey === "jackpot_duration_seconds" ? "..." : "Guardar"}
+              {busyKey === "spotlight_duration_seconds" ? "..." : "Guardar"}
             </button>
-            {savedKey === "jackpot_duration_seconds" && (
+            {savedKey === "spotlight_duration_seconds" && (
               <span
                 className="self-center text-sm font-semibold text-[var(--color-success)]"
                 role="status"
@@ -127,7 +127,7 @@ export function SettingsTab() {
         <div className="md:col-span-2">
           <p className="field-label">Audio</p>
           <div className="flex flex-wrap items-center gap-4">
-            <label className="flex items-center gap-2 text-sm text-vault-silver">
+            <label className="flex items-center gap-2 text-sm text-bop-silver">
               <input
                 type="checkbox"
                 checked={muted}
@@ -138,8 +138,8 @@ export function SettingsTab() {
               />
               Mute global
             </label>
-            <label className="flex items-center gap-3 text-sm text-vault-silver">
-              <span className="uppercase tracking-widest text-xs text-vault-blue/70">
+            <label className="flex items-center gap-3 text-sm text-bop-silver">
+              <span className="uppercase tracking-widest text-xs text-bop-chrome/70">
                 Volumen
               </span>
               <input
@@ -153,16 +153,16 @@ export function SettingsTab() {
                   setMasterValue(v);
                   sfx.setMaster(v);
                 }}
-                className="accent-vault-blue"
+                className="accent-bop-chrome"
               />
-              <span className="font-digital tabular-nums text-vault-platinum">
+              <span className="font-digital tabular-nums text-bop-platinum">
                 {Math.round(master * 100)}%
               </span>
             </label>
           </div>
           <p className="field-help">
             Mute y volumen se guardan en localStorage y se aplican a la animación
-            de “máquina expulsando dinero”. Si dejás MP3 en{" "}
+            de reconocimiento. Si dejás MP3 en{" "}
             <code className="rounded bg-[var(--bg-elevated)] px-1 py-0.5 font-mono text-[12px] text-[var(--color-primary-hover)]">
               /public/sounds/
             </code>{" "}

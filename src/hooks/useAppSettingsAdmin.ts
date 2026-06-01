@@ -3,12 +3,12 @@ import { supabase } from "@/lib/supabase";
 
 interface SettingsMap {
   polling_interval_seconds: number;
-  jackpot_duration_seconds: number;
+  spotlight_duration_seconds: number;
 }
 
 const DEFAULTS: SettingsMap = {
   polling_interval_seconds: 10,
-  jackpot_duration_seconds: 10,
+  spotlight_duration_seconds: 10,
 };
 
 export function useAppSettingsAdmin() {
@@ -33,10 +33,10 @@ export function useAppSettingsAdmin() {
       ) {
         merged.polling_interval_seconds = row.value;
       } else if (
-        row.key === "jackpot_duration_seconds" &&
+        row.key === "spotlight_duration_seconds" &&
         typeof row.value === "number"
       ) {
-        merged.jackpot_duration_seconds = row.value;
+        merged.spotlight_duration_seconds = row.value;
       }
     }
     setSettings(merged);

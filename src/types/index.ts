@@ -32,7 +32,7 @@ export interface Sale {
   value: number;
 }
 
-export interface JackpotEvent {
+export interface SpotlightEvent {
   agent: Agent;
   amount: number;
   triggeredAt: number;

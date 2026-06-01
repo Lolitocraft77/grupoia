@@ -2,23 +2,23 @@ import { useCallback, useEffect, useRef } from "react";
 import { logger } from "@/lib/logger";
 
 /**
- * Money-gun SFX — pure Web Audio synthesis. No file probing, no HTMLAudio
+ * Spotlight SFX — pure Web Audio synthesis. No file probing, no HTMLAudio
  * elements, no fetches. This matches the architecture of the original repo
  * exactly (which is known to coexist cleanly with songs played by
  * useAudioPlayer).
  *
- * Three stages, called by JackpotOverlay:
- *   - mechanical()  — short servo / lock-and-load
- *   - cashBurst()   — bills firing out (paper rustle + bass thump + chips)
- *   - winStinger()  — premium "vault confirmation" hit
+ * Three stages, called by SpotlightOverlay:
+ *   - mechanical()  — short servo / engage
+ *   - burst()       — tokens streaming out (sweep + bass thump + chimes)
+ *   - stinger()     — premium confirmation hit
  *
  * Master volume + global mute live in localStorage:
- *   - dolar.audio.muted   "1" | "0"
- *   - dolar.audio.master  number 0–1
+ *   - bop.audio.muted   "1" | "0"
+ *   - bop.audio.master  number 0–1
  */
 
-const STORAGE_MUTE = "dolar.audio.muted";
-const STORAGE_MASTER = "dolar.audio.master";
+const STORAGE_MUTE = "bop.audio.muted";
+const STORAGE_MASTER = "bop.audio.master";
 
 const readMuted = () => {
   try {
@@ -38,7 +38,7 @@ const readMaster = () => {
   }
 };
 
-export function useJackpotSfx() {
+export function useSpotlightSfx() {
   const ctxRef = useRef<AudioContext | null>(null);
   const masterRef = useRef<GainNode | null>(null);
   const activeNodes = useRef<Set<AudioScheduledSourceNode>>(new Set());
@@ -135,7 +135,7 @@ export function useJackpotSfx() {
     osc.onended = () => activeNodes.current.delete(osc);
   };
 
-  /** Short noise burst — used for paper rustle / cash sweep. */
+  /** Short noise burst — used for the sweep texture. */
   const noise = (
     startOffset: number,
     durationMs: number,
@@ -189,8 +189,8 @@ export function useJackpotSfx() {
     noise(0.08, 90, 0.06, { lo: 1500, hi: 5000 });
   }, []);
 
-  /** Stage 2 — cash bursting out of the gun. */
-  const cashBurst = useCallback(() => {
+  /** Stage 2 — tokens bursting out of the emitter. */
+  const burst = useCallback(() => {
     if (!ensureCtx()) return;
     beep(70, 0, 220, "sine", 0.55);
     beep(110, 0.02, 180, "sine", 0.32);
@@ -201,8 +201,8 @@ export function useJackpotSfx() {
     }
   }, []);
 
-  /** Stage 3 — premium win confirmation stinger. */
-  const winStinger = useCallback(() => {
+  /** Stage 3 — premium confirmation stinger. */
+  const stinger = useCallback(() => {
     if (!ensureCtx()) return;
     const notes = [523.25, 659.25, 783.99, 1046.5];
     notes.forEach((f, i) => beep(f, i * 0.04, 320, "triangle", 0.32));
@@ -262,8 +262,8 @@ export function useJackpotSfx() {
 
   return {
     mechanical,
-    cashBurst,
-    winStinger,
+    burst,
+    stinger,
     stop,
     setMuted,
     setMaster,

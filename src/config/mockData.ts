@@ -9,7 +9,7 @@ const portrait = (seed: string) =>
 export const mockTeams: Team[] = [
   {
     id: "mesa-1",
-    name: "Mesa 1 — Bank Vault",
+    name: "Mesa 1",
     goal: 75_000,
     iconUrl: null,
     displayOrder: 0,
@@ -24,7 +24,7 @@ export const mockTeams: Team[] = [
   },
   {
     id: "mesa-2",
-    name: "Mesa 2 — Reserve Desk",
+    name: "Mesa 2",
     goal: 60_000,
     iconUrl: null,
     displayOrder: 1,

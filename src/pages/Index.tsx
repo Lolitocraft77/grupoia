@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
-import { VaultBackground } from "@/components/dashboard/VaultBackground";
+import { AmbientBackground } from "@/components/dashboard/AmbientBackground";
 import { StartScreen } from "@/components/dashboard/StartScreen";
 import { DashboardView } from "@/components/dashboard/DashboardView";
-import { JackpotOverlay } from "@/components/dashboard/JackpotOverlay";
+import { SpotlightOverlay } from "@/components/dashboard/SpotlightOverlay";
 import { useAgents } from "@/hooks/useAgents";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useGoogleSheetData } from "@/hooks/useGoogleSheetData";
 import { buildTeams } from "@/lib/buildTeams";
 import { mockTeams } from "@/config/mockData";
 import { logger } from "@/lib/logger";
-import type { Agent, JackpotEvent, Sale, Team } from "@/types";
+import type { Agent, SpotlightEvent, Sale, Team } from "@/types";
 
 const norm = (s: string) =>
   s.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -27,8 +27,8 @@ const synthAgentFromSale = (sale: Sale): Agent => ({
 
 export default function Index() {
   const [entered, setEntered] = useState(false);
-  const [queue, setQueue] = useState<JackpotEvent[]>([]);
-  const [current, setCurrent] = useState<JackpotEvent | null>(null);
+  const [queue, setQueue] = useState<SpotlightEvent[]>([]);
+  const [current, setCurrent] = useState<SpotlightEvent | null>(null);
 
   const { agents, teams: teamRows, error: agentsError } = useAgents();
   const { settings } = useAppSettings();
@@ -46,20 +46,20 @@ export default function Index() {
         ? buildTeams(agents, teamRows, null).flatMap((t) => t.agents)
         : mockTeams.flatMap((t) => t.agents);
       const match = liveAgents.find((a) => norm(a.name) === norm(sale.agentName));
-      const agentForJackpot: Agent = match ?? synthAgentFromSale(sale);
+      const agentForSpotlight: Agent = match ?? synthAgentFromSale(sale);
       if (!match) {
         logger.warn(
           "Sale agent not found in Supabase agents — using synthetic agent for animation",
           { sheetAgent: sale.agentName, supaAgents: liveAgents.map((a) => a.name) },
         );
       }
-      logger.info("disparando jackpot", {
-        agente: agentForJackpot.name,
+      logger.info("disparando reconocimiento", {
+        agente: agentForSpotlight.name,
         monto: sale.value,
       });
       setQueue((q) => [
         ...q,
-        { agent: agentForJackpot, amount: sale.value, triggeredAt: Date.now() },
+        { agent: agentForSpotlight, amount: sale.value, triggeredAt: Date.now() },
       ]);
     },
   });
@@ -69,7 +69,7 @@ export default function Index() {
     return buildTeams(agents, teamRows, sheet.data);
   }, [agents, teamRows, sheet.data]);
 
-  // Serial queue: only one jackpot animation runs at a time.
+  // Serial queue: only one spotlight animation runs at a time.
   useEffect(() => {
     if (current || queue.length === 0) return;
     setCurrent(queue[0]);
@@ -78,7 +78,7 @@ export default function Index() {
 
   return (
     <div className="relative h-full w-full">
-      <VaultBackground />
+      <AmbientBackground />
 
       {!entered ? (
         <StartScreen onEnter={() => setEntered(true)} />
@@ -86,14 +86,14 @@ export default function Index() {
         <DashboardView teams={liveTeams} />
       )}
 
-      <JackpotOverlay
+      <SpotlightOverlay
         event={current}
         onComplete={() => setCurrent(null)}
-        durationMs={settings.jackpot_duration_seconds * 1000}
+        durationMs={settings.spotlight_duration_seconds * 1000}
       />
 
       {entered && (agentsError || sheet.error) && (
-        <div className="fixed bottom-4 left-4 z-40 max-w-sm rounded-md border border-vault-danger bg-black/80 px-4 py-2 text-xs text-vault-danger">
+        <div className="fixed bottom-4 left-4 z-40 max-w-sm rounded-md border border-bop-alert bg-black/80 px-4 py-2 text-xs text-bop-alert">
           {agentsError && <div>DB: error de conexión</div>}
           {sheet.error && <div>Sheet: error de sincronización</div>}
         </div>

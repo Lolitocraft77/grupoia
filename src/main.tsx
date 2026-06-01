@@ -3,9 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 
-// Verify the vault background is reachable; otherwise the CSS fallback
+// Verify the ambient background is reachable; otherwise the CSS fallback
 // (gradient defined in --bg-fallback) takes over and we leave a console warning.
-const BG_PATH = "/bg-vault.svg";
+const BG_PATH = "/bg-bop.svg";
 const probe = new Image();
 probe.onerror = () => {
   console.warn(

@@ -3,12 +3,12 @@ import { supabase } from "@/lib/supabase";
 
 export interface AppSettings {
   polling_interval_seconds: number;
-  jackpot_duration_seconds: number;
+  spotlight_duration_seconds: number;
 }
 
 const DEFAULTS: AppSettings = {
   polling_interval_seconds: 10,
-  jackpot_duration_seconds: 10,
+  spotlight_duration_seconds: 10,
 };
 
 export function useAppSettings() {
@@ -29,10 +29,10 @@ export function useAppSettings() {
         if (row.key === "polling_interval_seconds" && typeof v === "number") {
           merged.polling_interval_seconds = v;
         } else if (
-          row.key === "jackpot_duration_seconds" &&
+          row.key === "spotlight_duration_seconds" &&
           typeof v === "number"
         ) {
-          merged.jackpot_duration_seconds = v;
+          merged.spotlight_duration_seconds = v;
         }
       }
       setSettings(merged);

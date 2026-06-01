@@ -1,5 +1,5 @@
 /**
- * DolarDashboard — doGet (Google Apps Script)
+ * BOP — doGet (Google Apps Script)
  *
  * Devuelve { teams, newSales } para el Edge Function google-sheets-proxy.
  *
@@ -17,7 +17,7 @@
  *
  * FUENTES DE DATOS:
  *
- * Hoja "Base_Agregada" — FUENTE OFICIAL DEL MONTO QUE ANIMA EL JACKPOT.
+ * Hoja "Base_Agregada" — FUENTE OFICIAL DEL MONTO QUE ANIMA EL DESTACADO.
  *   A = Agente, B = Fecha, C = Monto, D = semana,
  *   E = equipo, F = fecha limpia, G = equipo limpio.
  *   Cada fila = una venta. La animación dispara con el `Monto` de esta hoja.
@@ -48,7 +48,7 @@ function doGet() {
       return jsonResponse({ error: "Script no vinculado a un Sheet" });
     }
 
-    console.log("[DolarGS] doGet → leyendo:", ss.getName());
+    console.log("[BOP-GS] doGet → leyendo:", ss.getName());
 
     var sheetTabla = ss.getSheetByName("Tabla");
     var sheetEquipos = ss.getSheetByName("Equipos");
@@ -68,7 +68,7 @@ function doGet() {
     var newSales = processNewSalesFromBaseAgregada(dataBase, dataForm);
 
     console.log(
-      "[DolarGS] Base_Agregada filas leídas:",
+      "[BOP-GS] Base_Agregada filas leídas:",
       dataBase.length,
       "→ ventas válidas:",
       newSales.length,
@@ -78,7 +78,7 @@ function doGet() {
 
     return jsonResponse({ teams: teams, newSales: newSales });
   } catch (e) {
-    console.error("[DolarGS] doGet error:", e.toString(), e.stack || "");
+    console.error("[BOP-GS] doGet error:", e.toString(), e.stack || "");
     return jsonResponse({ error: e.toString(), stack: e.stack || null });
   }
 }
@@ -180,7 +180,7 @@ function processTeamsData(dataTabla, dataEquipos) {
 }
 
 /**
- * FUENTE OFICIAL del monto que anima el jackpot.
+ * FUENTE OFICIAL del monto que anima el destacado.
  * Lee la hoja "Base_Agregada":
  *   col A = Agente, col B = Fecha, col C = Monto.
  * Cruza con "Form Responses 1" (col A = Timestamp de envío del formulario,
@@ -237,7 +237,7 @@ function processNewSalesFromBaseAgregada(data, dataForm) {
     // Solo loguear las primeras 5 filas para no saturar Stackdriver con
     // sheets grandes. El total se loguea al final en doGet().
     if (sales.length < 5) {
-      console.log("[DolarGS] Base_Agregada row", i, "→", JSON.stringify({
+      console.log("[BOP-GS] Base_Agregada row", i, "→", JSON.stringify({
         agente: nameStr,
         monto: monto,
         submittedAt: submittedAt
@@ -306,21 +306,21 @@ function toNumber(v) {
  */
 function test() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  console.log("[DolarGS] Spreadsheet name:", ss ? ss.getName() : "NULL");
+  console.log("[BOP-GS] Spreadsheet name:", ss ? ss.getName() : "NULL");
 
   if (!ss) {
-    console.log("[DolarGS] ERROR: el script no está vinculado a un Sheet.");
+    console.log("[BOP-GS] ERROR: el script no está vinculado a un Sheet.");
     return;
   }
 
   var sheetNames = ss.getSheets().map(function (s) { return s.getName(); });
-  console.log("[DolarGS] Hojas existentes:", JSON.stringify(sheetNames));
+  console.log("[BOP-GS] Hojas existentes:", JSON.stringify(sheetNames));
 
-  console.log("[DolarGS] Hoja 'Tabla':", ss.getSheetByName("Tabla") ? "OK" : "NO ENCONTRADA");
-  console.log("[DolarGS] Hoja 'Equipos':", ss.getSheetByName("Equipos") ? "OK" : "NO ENCONTRADA");
-  console.log("[DolarGS] Hoja 'Base_Agregada':", ss.getSheetByName("Base_Agregada") ? "OK" : "NO ENCONTRADA");
+  console.log("[BOP-GS] Hoja 'Tabla':", ss.getSheetByName("Tabla") ? "OK" : "NO ENCONTRADA");
+  console.log("[BOP-GS] Hoja 'Equipos':", ss.getSheetByName("Equipos") ? "OK" : "NO ENCONTRADA");
+  console.log("[BOP-GS] Hoja 'Base_Agregada':", ss.getSheetByName("Base_Agregada") ? "OK" : "NO ENCONTRADA");
 
   // Ejecutar el doGet completo y mostrar resultado.
   var result = doGet();
-  console.log("[DolarGS] doGet output:", result.getContent().substring(0, 1500));
+  console.log("[BOP-GS] doGet output:", result.getContent().substring(0, 1500));
 }

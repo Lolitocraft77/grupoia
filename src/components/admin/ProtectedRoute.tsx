@@ -7,8 +7,8 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
 
   if (loading) {
     return (
-      <div className="bg-vault-pattern flex h-full w-full items-center justify-center">
-        <span className="font-display text-2xl uppercase tracking-widest text-cyan-glow">
+      <div className="bop-pattern flex h-full w-full items-center justify-center">
+        <span className="font-display text-2xl uppercase tracking-widest text-chrome-glow">
           Loading…
         </span>
       </div>

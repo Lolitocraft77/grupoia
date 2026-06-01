@@ -47,7 +47,7 @@ export function StartScreen({ onEnter }: StartScreenProps) {
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
-        className="mb-4 font-sans text-xs uppercase tracking-[0.55em] text-vault-blue/70"
+        className="mb-4 font-sans text-xs uppercase tracking-[0.55em] text-bop-chrome/70"
       >
         {BRAND.hallmark}
       </motion.div>
@@ -69,16 +69,16 @@ export function StartScreen({ onEnter }: StartScreenProps) {
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.18, duration: 0.25, ease: "easeOut" }}
-        className="mt-6 text-center font-display text-3xl uppercase tracking-[0.2em] text-cyan-glow sm:text-4xl"
+        className="mt-6 text-center font-display text-3xl uppercase tracking-[0.2em] text-chrome-glow sm:text-4xl"
       >
-        Trading Vault
+        Panel de operaciones
       </motion.h1>
 
       <motion.p
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.26, duration: 0.25, ease: "easeOut" }}
-        className="mt-3 max-w-2xl text-center font-sans text-sm tracking-[0.35em] text-vault-silver/60 sm:text-base"
+        className="mt-3 max-w-2xl text-center font-sans text-sm tracking-[0.35em] text-bop-silver/60 sm:text-base"
       >
         {BRAND.tagline.toUpperCase()}
       </motion.p>
@@ -94,7 +94,7 @@ export function StartScreen({ onEnter }: StartScreenProps) {
           onClick={handleEnter}
           className="font-display text-2xl tracking-[0.2em]"
         >
-          Enter Vault
+          Entrar
         </Button>
       </motion.div>
 
@@ -102,9 +102,9 @@ export function StartScreen({ onEnter }: StartScreenProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.45, duration: 0.3 }}
-        className="absolute bottom-10 font-sans text-xs tracking-[0.5em] text-vault-blue/50"
+        className="absolute bottom-10 font-sans text-xs tracking-[0.5em] text-bop-chrome/50"
       >
-        OPERATIONS CONSOLE
+        BUSINESS OPERATIONS 12:12
       </motion.p>
     </motion.div>
   );

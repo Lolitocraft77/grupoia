@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import type { Agent } from "@/types";
-import { HexBadge } from "./HexBadge";
+import { RankBadge } from "./RankBadge";
 import { formatCurrency } from "@/lib/utils";
 
 interface AgentRowProps {
@@ -19,7 +19,7 @@ export function AgentRow({ agent, rank }: AgentRowProps) {
       initial={{ opacity: 0, x: -12 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ type: "spring", stiffness: 220, damping: 26 }}
-      className="flex min-w-0 items-center gap-3 rounded-md border border-vault-iron bg-vault-graphite/60 px-3 py-2 sm:gap-4 sm:px-4 sm:py-3"
+      className="flex min-w-0 items-center gap-3 rounded-md border border-bop-ash bg-bop-graphite/60 px-3 py-2 sm:gap-4 sm:px-4 sm:py-3"
     >
       <div
         className="flex shrink-0 items-center justify-center"
@@ -27,10 +27,10 @@ export function AgentRow({ agent, rank }: AgentRowProps) {
         aria-label={`Ranking ${rank}`}
       >
         {isPodium ? (
-          <HexBadge rank={rank as 1 | 2 | 3} size={48} className="h-full w-full" />
+          <RankBadge rank={rank as 1 | 2 | 3} size={48} className="h-full w-full" />
         ) : (
           <span
-            className="font-display tabular-nums text-vault-silver/70"
+            className="font-display tabular-nums text-bop-silver/70"
             style={{ fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}
           >
             {rank}
@@ -39,7 +39,7 @@ export function AgentRow({ agent, rank }: AgentRowProps) {
       </div>
 
       <div
-        className="relative shrink-0 overflow-hidden rounded-md ring-1 ring-vault-blue/60"
+        className="relative shrink-0 overflow-hidden rounded-md ring-1 ring-bop-chrome/60"
         style={{ width: photoSize, height: photoSize }}
       >
         {agent.photoUrl ? (
@@ -51,7 +51,7 @@ export function AgentRow({ agent, rank }: AgentRowProps) {
           />
         ) : (
           <div
-            className="flex h-full w-full items-center justify-center bg-vault-steel font-display text-vault-blue-bright"
+            className="flex h-full w-full items-center justify-center bg-bop-slate font-display text-bop-chrome-light"
             style={{ fontSize: "clamp(0.9rem, 2.5vw, 1.25rem)" }}
             aria-hidden
           >
@@ -61,7 +61,7 @@ export function AgentRow({ agent, rank }: AgentRowProps) {
       </div>
 
       <p
-        className="min-w-0 flex-1 truncate font-sans font-semibold text-vault-platinum"
+        className="min-w-0 flex-1 truncate font-sans font-semibold text-bop-platinum"
         style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}
         title={agent.name}
       >
@@ -69,7 +69,7 @@ export function AgentRow({ agent, rank }: AgentRowProps) {
       </p>
 
       <p
-        className="shrink-0 font-digital tabular-nums text-cyan-glow"
+        className="shrink-0 font-digital tabular-nums text-chrome-glow"
         style={{ fontSize: "clamp(1rem, 2.4vw, 1.25rem)" }}
       >
         {formatCurrency(agent.total)}

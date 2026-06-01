@@ -34,7 +34,7 @@ interface PlayOptions {
  *   - `crossOrigin = "anonymous"` is REQUIRED. Without it, the browser marks
  *     the audio as "tainted" and `createMediaElementSource()` produces silence.
  *   - Each play() creates a fresh AudioContext; cleanup() closes it. This
- *     keeps the SFX hook (useJackpotSfx) and the song player isolated and
+ *     keeps the SFX hook (useSpotlightSfx) and the song player isolated and
  *     avoids accidental cross-routing.
  *   - Volume + fade-out run on the GainNode, not on `audio.volume`. This is
  *     the cleanest way to attenuate within the Web Audio graph.

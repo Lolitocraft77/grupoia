@@ -12,5 +12,5 @@ on conflict (id) do nothing;
 
 insert into public.app_settings (key, value) values
   ('polling_interval_seconds', '10'::jsonb),
-  ('jackpot_duration_seconds', '10'::jsonb)
+  ('spotlight_duration_seconds', '10'::jsonb)
 on conflict (key) do nothing;

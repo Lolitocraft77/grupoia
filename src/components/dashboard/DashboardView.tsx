@@ -22,15 +22,15 @@ export function DashboardView({ teams }: DashboardViewProps) {
 
   return (
     <div className="flex h-full w-full flex-col">
-      <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-vault-blue/30 px-4 pb-4 pt-4 sm:px-6 sm:pb-5 lg:px-8">
+      <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-bop-chrome/30 px-4 pb-4 pt-4 sm:px-6 sm:pb-5 lg:px-8">
         <div className="flex min-w-0 items-center gap-3 sm:gap-4">
           <BrandMark size={48} />
           <div className="min-w-0">
-            <p className="font-sans text-[10px] uppercase tracking-[0.4em] text-vault-blue/70 sm:text-xs">
-              Trading Vault
+            <p className="font-sans text-[10px] uppercase tracking-[0.4em] text-bop-chrome/70 sm:text-xs">
+              Operaciones en vivo
             </p>
             <h1
-              className="truncate font-display leading-none text-cyan-glow"
+              className="truncate font-display leading-none text-chrome-glow"
               style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}
             >
               {BRAND.name.toUpperCase()}
@@ -53,16 +53,16 @@ export function DashboardView({ teams }: DashboardViewProps) {
         </div>
 
         <div className="text-right">
-          <p className="font-sans text-[10px] uppercase tracking-[0.4em] text-vault-silver/60 sm:text-xs">
+          <p className="font-sans text-[10px] uppercase tracking-[0.4em] text-bop-silver/60 sm:text-xs">
             Total Volume
           </p>
           <p
-            className="font-digital text-cyan-glow"
+            className="font-digital text-chrome-glow"
             style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}
           >
             {formatCurrency(houseTotal)}
           </p>
-          <p className="font-sans text-[11px] text-vault-silver/50 sm:text-xs">
+          <p className="font-sans text-[11px] text-bop-silver/50 sm:text-xs">
             target {formatCurrency(houseGoal)}
           </p>
         </div>
@@ -71,11 +71,11 @@ export function DashboardView({ teams }: DashboardViewProps) {
       <main className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
         {teams.length === 0 ? (
           <div className="flex h-full items-center justify-center">
-            <p className="text-center font-sans text-base text-vault-silver/60 sm:text-lg">
+            <p className="text-center font-sans text-base text-bop-silver/60 sm:text-lg">
               No hay mesas configuradas. Andá a{" "}
               <a
                 href="/admin"
-                className="text-vault-blue underline underline-offset-4"
+                className="text-bop-chrome underline underline-offset-4"
               >
                 /admin
               </a>{" "}

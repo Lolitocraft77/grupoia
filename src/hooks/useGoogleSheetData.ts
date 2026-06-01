@@ -4,7 +4,7 @@ import { PROCESSED_SALES_LIMIT } from "@/config/constants";
 import { logger } from "@/lib/logger";
 import type { Sale } from "@/types";
 
-const STORAGE_KEY = "dolar-processed-sales-v1";
+const STORAGE_KEY = "bop-processed-sales-v1";
 const STORAGE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
 
 /** Shape returned by the Apps Script `doGet`. */

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 /**
  * Foreground decoration over the global body background image.
- * Soft rising particles + a slow vertical scanline (vault scan).
+ * Soft rising particles + a slow vertical scanline.
  */
 const PARTICLE_COUNT = 14;
 
@@ -11,7 +11,7 @@ interface Particle {
   size: number;
   duration: number;
   delay: number;
-  hue: "blue" | "silver";
+  hue: "chrome" | "silver";
 }
 
 function makeParticles(): Particle[] {
@@ -20,21 +20,21 @@ function makeParticles(): Particle[] {
     size: 2 + Math.random() * 2,
     duration: 22 + Math.random() * 18,
     delay: Math.random() * -30,
-    hue: Math.random() > 0.55 ? "silver" : "blue",
+    hue: Math.random() > 0.55 ? "silver" : "chrome",
   }));
 }
 
-export function VaultBackground() {
+export function AmbientBackground() {
   const particles = useMemo(makeParticles, []);
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden>
-      {/* Slow scanline / vault scan */}
+      {/* Slow scanline */}
       <div
-        className="anim-vault-scan absolute inset-x-0 h-[120%]"
+        className="anim-bop-scan absolute inset-x-0 h-[120%]"
         style={{
           top: "-10%",
           background:
-            "linear-gradient(180deg, transparent 0%, rgba(58,166,255,0.06) 50%, transparent 100%)",
+            "linear-gradient(180deg, transparent 0%, rgba(196,201,209,0.05) 50%, transparent 100%)",
           mixBlendMode: "screen",
         }}
       />
@@ -47,9 +47,9 @@ export function VaultBackground() {
             bottom: "-10vh",
             width: `${p.size}px`,
             height: `${p.size}px`,
-            backgroundColor: p.hue === "blue" ? "#3aa6ff" : "#cfd6e4",
-            boxShadow: `0 0 ${p.size * 2}px ${p.hue === "blue" ? "#3aa6ff" : "#cfd6e4"}`,
-            opacity: 0.32,
+            backgroundColor: p.hue === "chrome" ? "#c4c9d1" : "#b7bcc4",
+            boxShadow: `0 0 ${p.size * 2}px ${p.hue === "chrome" ? "#c4c9d1" : "#b7bcc4"}`,
+            opacity: 0.28,
             animationDuration: `${p.duration}s`,
             animationDelay: `${p.delay}s`,
           }}
@@ -58,6 +58,3 @@ export function VaultBackground() {
     </div>
   );
 }
-
-/** Backwards-compat alias so `Index.tsx` import path is invariant. */
-export const KriptexBackground = VaultBackground;
