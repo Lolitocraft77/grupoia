@@ -8,17 +8,31 @@ import { formatCurrency } from "@/lib/utils";
 
 interface DashboardViewProps {
   teams: Team[];
+  /** Meta del mes (target global), configurable desde /admin. */
+  monthlyTarget: number;
 }
 
-export function DashboardView({ teams }: DashboardViewProps) {
+/** Suma un campo de período entre mesas; `null` si ninguna mesa lo trae. */
+function sumPeriod(teams: Team[], key: "dia" | "semana" | "mes"): number | null {
+  let acc: number | null = null;
+  for (const t of teams) {
+    const v = t[key];
+    if (typeof v === "number") acc = (acc ?? 0) + v;
+  }
+  return acc;
+}
+
+export function DashboardView({ teams, monthlyTarget }: DashboardViewProps) {
   const houseTotal = useMemo(
     () => teams.reduce((sum, t) => sum + t.total, 0),
     [teams],
   );
-  const houseGoal = useMemo(
-    () => teams.reduce((sum, t) => sum + t.goal, 0),
-    [teams],
-  );
+  const houseDia = useMemo(() => sumPeriod(teams, "dia"), [teams]);
+  const houseSemana = useMemo(() => sumPeriod(teams, "semana"), [teams]);
+  const houseMes = useMemo(() => sumPeriod(teams, "mes"), [teams]);
+
+  const remaining = Math.max(monthlyTarget - houseTotal, 0);
+  const targetReached = houseTotal >= monthlyTarget;
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -35,21 +49,21 @@ export function DashboardView({ teams }: DashboardViewProps) {
             >
               {BRAND.name.toUpperCase()}
             </h1>
+            {/* LIVE — bajo el título, alineado a la izquierda. */}
+            <div className="mt-1.5 flex items-center gap-2">
+              <span
+                className="anim-live-pulse h-2.5 w-2.5 rounded-full"
+                style={{
+                  background: "var(--color-danger)",
+                  boxShadow:
+                    "0 0 10px var(--color-danger), 0 0 20px var(--color-danger)",
+                }}
+              />
+              <NeonText color="danger" className="text-xl sm:text-2xl">
+                LIVE
+              </NeonText>
+            </div>
           </div>
-        </div>
-
-        <div className="order-3 flex w-full items-center justify-center gap-2 sm:order-none sm:w-auto">
-          <span
-            className="anim-live-pulse h-2.5 w-2.5 rounded-full"
-            style={{
-              background: "var(--color-danger)",
-              boxShadow:
-                "0 0 10px var(--color-danger), 0 0 20px var(--color-danger)",
-            }}
-          />
-          <NeonText color="danger" className="text-2xl sm:text-3xl">
-            LIVE
-          </NeonText>
         </div>
 
         <div className="text-right">
@@ -63,10 +77,24 @@ export function DashboardView({ teams }: DashboardViewProps) {
             {formatCurrency(houseTotal)}
           </p>
           <p className="font-sans text-[11px] text-bop-silver/50 sm:text-xs">
-            target {formatCurrency(houseGoal)}
+            target {formatCurrency(monthlyTarget)}
           </p>
         </div>
       </header>
+
+      {/* ───── Resumen global de oficina (suma de las 3 mesas) ───── */}
+      <section className="px-4 pt-4 sm:px-6 lg:px-8">
+        <div className="bop-card grid grid-cols-2 gap-x-4 gap-y-3 px-4 py-3 sm:grid-cols-4 sm:py-4">
+          <OfficeStat label="Día" value={houseDia} />
+          <OfficeStat label="Semana" value={houseSemana} />
+          <OfficeStat label="Mes" value={houseMes} />
+          {targetReached ? (
+            <OfficeStat label="Falta" reached />
+          ) : (
+            <OfficeStat label="Falta" value={remaining} accent />
+          )}
+        </div>
+      </section>
 
       <main className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
         {teams.length === 0 ? (
@@ -96,6 +124,49 @@ export function DashboardView({ teams }: DashboardViewProps) {
           </div>
         )}
       </main>
+    </div>
+  );
+}
+
+function OfficeStat({
+  label,
+  value,
+  accent = false,
+  reached = false,
+}: {
+  label: string;
+  value?: number | null;
+  accent?: boolean;
+  reached?: boolean;
+}) {
+  return (
+    <div className="flex flex-col items-center text-center">
+      <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-bop-chrome/70 sm:text-xs sm:tracking-[0.4em]">
+        {label}
+      </span>
+      {reached ? (
+        <span
+          className="font-sans text-sm uppercase tracking-[0.3em] sm:text-base"
+          style={{ color: "var(--bop-emerald)" }}
+        >
+          Target reached
+        </span>
+      ) : (
+        <span
+          className={accent ? "font-digital" : "font-digital text-chrome-glow"}
+          style={{
+            fontSize: "clamp(1.1rem, 2.6vw, 1.6rem)",
+            ...(accent
+              ? {
+                  color: "var(--bop-emerald)",
+                  textShadow: "0 0 10px var(--bop-emerald-glow)",
+                }
+              : {}),
+          }}
+        >
+          {value == null ? "—" : formatCurrency(value)}
+        </span>
+      )}
     </div>
   );
 }

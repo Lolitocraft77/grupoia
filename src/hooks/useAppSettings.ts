@@ -4,11 +4,14 @@ import { supabase } from "@/lib/supabase";
 export interface AppSettings {
   polling_interval_seconds: number;
   spotlight_duration_seconds: number;
+  /** Meta del mes (target global de la oficina). Editable desde /admin. */
+  monthly_target: number;
 }
 
 const DEFAULTS: AppSettings = {
   polling_interval_seconds: 10,
   spotlight_duration_seconds: 10,
+  monthly_target: 130000,
 };
 
 export function useAppSettings() {
@@ -33,6 +36,8 @@ export function useAppSettings() {
           typeof v === "number"
         ) {
           merged.spotlight_duration_seconds = v;
+        } else if (row.key === "monthly_target" && typeof v === "number") {
+          merged.monthly_target = v;
         }
       }
       setSettings(merged);

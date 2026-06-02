@@ -4,11 +4,13 @@ import { supabase } from "@/lib/supabase";
 interface SettingsMap {
   polling_interval_seconds: number;
   spotlight_duration_seconds: number;
+  monthly_target: number;
 }
 
 const DEFAULTS: SettingsMap = {
   polling_interval_seconds: 10,
   spotlight_duration_seconds: 10,
+  monthly_target: 130000,
 };
 
 export function useAppSettingsAdmin() {
@@ -37,6 +39,11 @@ export function useAppSettingsAdmin() {
         typeof row.value === "number"
       ) {
         merged.spotlight_duration_seconds = row.value;
+      } else if (
+        row.key === "monthly_target" &&
+        typeof row.value === "number"
+      ) {
+        merged.monthly_target = row.value;
       }
     }
     setSettings(merged);

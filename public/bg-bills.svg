@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260">
+  <!--
+    Patron de billetes — solo primitivas directas (rect/ellipse/path),
+    sin defs/use/text porque no son fiables como CSS background-image.
+    Color e intensidad: trazo aca + bills-opacity en index.css.
+  -->
+  <g fill="none" stroke="#ffffff" stroke-width="2">
+    <!-- Billete 1 -->
+    <g transform="translate(66 56) rotate(-18)">
+      <rect x="-46" y="-26" width="92" height="52" rx="6"/>
+      <rect x="-40" y="-20" width="80" height="40" rx="4" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <ellipse cx="0" cy="0" rx="15" ry="13" stroke-width="1.4"/>
+      <path d="M0 -9 L0 9 M4 -6 C4 -9 -4 -9 -4 -5 C-4 -2 4 -3 4 1 C4 5 -4 5 -4 1" stroke-width="1.4"/>
+    </g>
+    <!-- Billete 2 -->
+    <g transform="translate(196 150) rotate(12)">
+      <rect x="-46" y="-26" width="92" height="52" rx="6"/>
+      <rect x="-40" y="-20" width="80" height="40" rx="4" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <ellipse cx="0" cy="0" rx="15" ry="13" stroke-width="1.4"/>
+      <path d="M0 -9 L0 9 M4 -6 C4 -9 -4 -9 -4 -5 C-4 -2 4 -3 4 1 C4 5 -4 5 -4 1" stroke-width="1.4"/>
+    </g>
+    <!-- Billete 3 -->
+    <g transform="translate(70 200) rotate(8)">
+      <rect x="-46" y="-26" width="92" height="52" rx="6"/>
+      <rect x="-40" y="-20" width="80" height="40" rx="4" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <ellipse cx="0" cy="0" rx="15" ry="13" stroke-width="1.4"/>
+      <path d="M0 -9 L0 9 M4 -6 C4 -9 -4 -9 -4 -5 C-4 -2 4 -3 4 1 C4 5 -4 5 -4 1" stroke-width="1.4"/>
+    </g>
+    <!-- Signos $ sueltos para densidad -->
+    <path transform="translate(212 42) scale(1.1)" stroke-width="1.6"
+          d="M0 -9 L0 9 M4 -6 C4 -9 -4 -9 -4 -5 C-4 -2 4 -3 4 1 C4 5 -4 5 -4 1"/>
+    <path transform="translate(24 124) scale(0.85)" stroke-width="1.6"
+          d="M0 -9 L0 9 M4 -6 C4 -9 -4 -9 -4 -5 C-4 -2 4 -3 4 1 C4 5 -4 5 -4 1"/>
+    <path transform="translate(150 242) scale(0.95)" stroke-width="1.6"
+          d="M0 -9 L0 9 M4 -6 C4 -9 -4 -9 -4 -5 C-4 -2 4 -3 4 1 C4 5 -4 5 -4 1"/>
+  </g>
+</svg>

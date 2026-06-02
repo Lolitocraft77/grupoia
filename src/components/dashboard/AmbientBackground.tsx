@@ -28,6 +28,22 @@ export function AmbientBackground() {
   const particles = useMemo(makeParticles, []);
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden>
+      {/* Billetes de fondo — capa estática (sin animación, sin sombras por
+          elemento). Intensidad ajustable vía --bills-opacity en index.css. */}
+      {/* Lluvia ambiental: UNA capa, animada solo con transform:translateY.
+          Colchón de 260px (un tile) arriba y abajo para que el loop no deje
+          borde vacío al desplazarse. */}
+      <div
+        className="anim-bills-drift absolute inset-x-0"
+        style={{
+          top: "-260px",
+          height: "calc(100% + 260px)",
+          backgroundImage: "url('/bg-bills.svg?v=3')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "260px 260px",
+          opacity: "var(--bills-opacity)",
+        }}
+      />
       {/* Slow scanline */}
       <div
         className="anim-bop-scan absolute inset-x-0 h-[120%]"

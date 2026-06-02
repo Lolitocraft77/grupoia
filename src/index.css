@@ -23,6 +23,15 @@
     --bop-positive: #a9b3ad;
     --bop-alert: #c79090;
 
+    /* ── Acento esmeralda (podio + faltante). Ajustá el tono acá. ── */
+    --bop-emerald: #34d399;       /* verde neón suave, premium */
+    --bop-emerald-glow: rgba(52, 211, 153, 0.45);
+
+    /* ── Fondo de billetes: intensidad ajustable (0 = oculto). ── */
+    --bills-opacity: 0.18;
+    /* Velocidad de la lluvia (un ciclo = un tile de 260px). Más alto = más lento. */
+    --bills-drift-duration: 40s;
+
     /* Semantic tokens — stable names so component classes keep resolving */
     --bg-base: var(--bop-void);
     --bg-surface: var(--bop-onyx);

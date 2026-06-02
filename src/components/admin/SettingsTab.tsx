@@ -7,6 +7,7 @@ export function SettingsTab() {
   const sfx = useSpotlightSfx();
   const [polling, setPolling] = useState(10);
   const [duration, setDuration] = useState(10);
+  const [monthlyTarget, setMonthlyTarget] = useState(130000);
   const [savedKey, setSavedKey] = useState<string | null>(null);
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [muted, setMuted] = useState<boolean>(sfx.isMuted());
@@ -15,10 +16,14 @@ export function SettingsTab() {
   useEffect(() => {
     setPolling(settings.polling_interval_seconds);
     setDuration(settings.spotlight_duration_seconds);
+    setMonthlyTarget(settings.monthly_target);
   }, [settings]);
 
   const save = async (
-    key: "polling_interval_seconds" | "spotlight_duration_seconds",
+    key:
+      | "polling_interval_seconds"
+      | "spotlight_duration_seconds"
+      | "monthly_target",
     value: number,
   ) => {
     setBusyKey(key);
@@ -121,6 +126,46 @@ export function SettingsTab() {
           </div>
           <p className="field-help">
             Tiempo total de la animación cuando entra una venta nueva.
+          </p>
+        </div>
+
+        <div className="md:col-span-2">
+          <label htmlFor="cfg-target" className="field-label">
+            Meta del mes (target global)
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <input
+              id="cfg-target"
+              type="number"
+              min="0"
+              step="1000"
+              value={monthlyTarget}
+              onChange={(e) =>
+                setMonthlyTarget(parseInt(e.target.value, 10) || 0)
+              }
+              disabled={loading}
+              className="field-input max-w-[200px]"
+            />
+            <button
+              type="button"
+              onClick={() => save("monthly_target", monthlyTarget)}
+              disabled={busyKey === "monthly_target"}
+              className="btn btn-primary btn-sm"
+            >
+              {busyKey === "monthly_target" ? "..." : "Guardar"}
+            </button>
+            {savedKey === "monthly_target" && (
+              <span
+                className="self-center text-sm font-semibold text-[var(--color-success)]"
+                role="status"
+              >
+                ✓ guardado
+              </span>
+            )}
+          </div>
+          <p className="field-help">
+            Objetivo consolidado de toda la oficina. El dashboard muestra el
+            faltante contra este valor. Se aplica en vivo.
           </p>
         </div>
 

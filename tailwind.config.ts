@@ -27,6 +27,8 @@ const bop = {
   // Functional states — the only, minimal, desaturated tints.
   positive: "#a9b3ad",    // silver-green: target reached / saved
   alert: "#c79090",       // muted rose: errors / danger
+  // Acento esmeralda — único color real, reservado al podio + faltante.
+  emerald: "#34d399",     // verde neón suave, premium (no chillón)
 };
 
 export default {

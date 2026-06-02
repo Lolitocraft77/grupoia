@@ -31,6 +31,14 @@
   50% { transform: translateY(-6px); }
 }
 
+/* Lluvia ambiental de billetes: desplaza la capa de fondo exactamente un
+   tile (260px). Como el patrón se repite cada 260px, el loop no tiene salto.
+   Solo transform → compositing puro en GPU, sin repintar. */
+@keyframes bills-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(0, 260px, 0); }
+}
+
 @keyframes bop-scan {
   0%   { transform: translateY(-110%); opacity: 0; }
   10%  { opacity: 0.45; }
@@ -117,6 +125,10 @@
   animation: bop-scan 6s linear infinite;
   will-change: transform, opacity;
 }
+.anim-bills-drift {
+  animation: bills-drift var(--bills-drift-duration, 40s) linear infinite;
+  will-change: transform;
+}
 .anim-camera-shake {
   animation: camera-shake 320ms cubic-bezier(.36,.07,.19,.97);
 }
@@ -160,6 +172,7 @@
   .anim-particle,
   .anim-logo-float,
   .anim-bop-scan,
+  .anim-bills-drift,
   .anim-camera-rumble,
   .anim-emitter-haze {
     animation: none !important;

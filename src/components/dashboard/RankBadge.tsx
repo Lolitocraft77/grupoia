@@ -8,32 +8,37 @@ interface RankBadgeProps {
 
 /**
  * Rank badge — engraved disc with an inner ring + numeral. Top 3 ranks use
- * the brushed-silver brand ramp; everything else falls back to a slate default.
+ * the brushed-silver brand ramp with an emerald accent (border + ring + glow)
+ * to mark the podium; everything else falls back to a slate default.
+ *
+ * Emerald accent — mirrors `--bop-emerald` in index.css. Adjust both together.
  */
+const EMERALD = "#34d399";
+
 const PALETTE: Record<
   number,
   { fill: string; stroke: string; glow: string; text: string; ring: string }
 > = {
   1: {
     fill: "#7c818b",
-    stroke: "#f4f6f8",
-    glow: "#e9ecf0",
+    stroke: EMERALD,
+    glow: EMERALD,
     text: "#050506",
-    ring: "#eceef1",
+    ring: EMERALD,
   },
   2: {
     fill: "#181b21",
-    stroke: "#c4c9d1",
-    glow: "#c4c9d1",
+    stroke: EMERALD,
+    glow: EMERALD,
     text: "#eceef1",
-    ring: "#c4c9d1",
+    ring: EMERALD,
   },
   3: {
     fill: "#0a0b0d",
-    stroke: "#8a8f98",
-    glow: "#b7bcc4",
-    text: "#c4c9d1",
-    ring: "#8a8f98",
+    stroke: EMERALD,
+    glow: EMERALD,
+    text: EMERALD,
+    ring: EMERALD,
   },
 };
 

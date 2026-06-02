@@ -77,13 +77,13 @@ export default function Index() {
   }, [current, queue]);
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative isolate h-full w-full">
       <AmbientBackground />
 
       {!entered ? (
         <StartScreen onEnter={() => setEntered(true)} />
       ) : (
-        <DashboardView teams={liveTeams} />
+        <DashboardView teams={liveTeams} monthlyTarget={settings.monthly_target} />
       )}
 
       <SpotlightOverlay
