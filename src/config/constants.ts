@@ -18,4 +18,4 @@ export const STAGE_STREAM_MS = 1_700;
 export const STAGE_REVEAL_MS = 1_400;
 
 export const PROCESSED_SALES_LIMIT = 1_000;
-export const HOUSE_NAME = "BUSINESS OPERATIONS 12:12";
+export const HOUSE_NAME = "GROUP I.A";

@@ -1,33 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
   <defs>
-    <radialGradient id="g-spot-tl" cx="0.12" cy="0.0" r="0.6">
-      <stop offset="0%" stop-color="#c4c9d1" stop-opacity="0.14"/>
-      <stop offset="100%" stop-color="#c4c9d1" stop-opacity="0"/>
+    <!-- Warm gold spotlight (top-left) — the single warm light -->
+    <radialGradient id="g-spot-gold" cx="0.16" cy="0.08" r="0.62">
+      <stop offset="0%" stop-color="#C9A227" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#C9A227" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="g-spot-br" cx="0.92" cy="1" r="0.6">
-      <stop offset="0%" stop-color="#7c818b" stop-opacity="0.16"/>
-      <stop offset="100%" stop-color="#7c818b" stop-opacity="0"/>
+    <!-- Chrome spotlights (right + bottom) -->
+    <radialGradient id="g-spot-chrome-r" cx="0.9" cy="0.22" r="0.55">
+      <stop offset="0%" stop-color="#B8B8BD" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#B8B8BD" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g-spot-chrome-b" cx="0.62" cy="1" r="0.6">
+      <stop offset="0%" stop-color="#6E6E73" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#6E6E73" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="g-base" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0a0b0d"/>
-      <stop offset="100%" stop-color="#050506"/>
+      <stop offset="0%" stop-color="#121216"/>
+      <stop offset="100%" stop-color="#060607"/>
     </linearGradient>
     <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#c4c9d1" stroke-opacity="0.045" stroke-width="1"/>
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#B8B8BD" stroke-opacity="0.04" stroke-width="1"/>
     </pattern>
-    <pattern id="thinlines" width="2" height="2" patternUnits="userSpaceOnUse">
-      <path d="M 0 0 L 2 0" fill="none" stroke="#c4c9d1" stroke-opacity="0.03"/>
+    <pattern id="grid-fine" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#B8B8BD" stroke-opacity="0.02" stroke-width="0.75"/>
     </pattern>
   </defs>
   <rect width="100%" height="100%" fill="url(#g-base)"/>
+  <rect width="100%" height="100%" fill="url(#grid-fine)"/>
   <rect width="100%" height="100%" fill="url(#grid)"/>
-  <rect width="100%" height="100%" fill="url(#thinlines)"/>
-  <rect width="100%" height="100%" fill="url(#g-spot-tl)"/>
-  <rect width="100%" height="100%" fill="url(#g-spot-br)"/>
-  <!-- Decorative ornamental frame -->
-  <g stroke="#b7bcc4" stroke-opacity="0.07" fill="none" stroke-width="1.5">
-    <rect x="40" y="40" width="1840" height="1000" rx="8"/>
-    <rect x="56" y="56" width="1808" height="968" rx="6" stroke-dasharray="3 5"/>
-    <rect x="72" y="72" width="1776" height="936" rx="4"/>
+  <rect width="100%" height="100%" fill="url(#g-spot-gold)"/>
+  <rect width="100%" height="100%" fill="url(#g-spot-chrome-r)"/>
+  <rect width="100%" height="100%" fill="url(#g-spot-chrome-b)"/>
+  <!-- Decorative ornamental frame — angular, gold hairline + chrome dashed -->
+  <g fill="none">
+    <rect x="40" y="40" width="1840" height="1000" rx="6" stroke="#C9A227" stroke-opacity="0.12" stroke-width="1.5"/>
+    <rect x="56" y="56" width="1808" height="968" rx="4" stroke="#B8B8BD" stroke-opacity="0.06" stroke-width="1" stroke-dasharray="3 6"/>
   </g>
 </svg>

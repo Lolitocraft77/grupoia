@@ -26,15 +26,15 @@ export interface BrandConfig {
   hallmark: string;
 }
 
-const NAME = env.VITE_BRAND_NAME?.trim() || "Business Operations 12:12";
+const NAME = env.VITE_BRAND_NAME?.trim() || "Group I.A";
 
 export const BRAND: BrandConfig = {
   name: NAME,
   tagline:
     env.VITE_BRAND_TAGLINE?.trim() ||
-    "Operaciones · Rendimiento · Tiempo real",
-  logoPath: env.VITE_BRAND_LOGO?.trim() || "/logos/bop.svg",
-  monogram: env.VITE_BRAND_MONOGRAM?.trim() || "BOP",
+    "Evolucionamos con la IA",
+  logoPath: env.VITE_BRAND_LOGO?.trim() || "/logos/group-ia.svg",
+  monogram: env.VITE_BRAND_MONOGRAM?.trim() || "IA",
   documentTitle: NAME,
   hallmark: "— panel operativo —",
 };

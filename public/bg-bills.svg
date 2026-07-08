@@ -4,7 +4,7 @@
     sin defs/use/text porque no son fiables como CSS background-image.
     Color e intensidad: trazo aca + bills-opacity en index.css.
   -->
-  <g fill="none" stroke="#ffffff" stroke-width="2">
+  <g fill="none" stroke="#c9a227" stroke-width="2">
     <!-- Billete 1 -->
     <g transform="translate(66 56) rotate(-18)">
       <rect x="-46" y="-26" width="92" height="52" rx="6"/>

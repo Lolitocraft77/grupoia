@@ -8,46 +8,47 @@ interface RankBadgeProps {
 
 /**
  * Rank badge — engraved disc with an inner ring + numeral. Top 3 ranks use
- * the brushed-silver brand ramp with an emerald accent (border + ring + glow)
- * to mark the podium; everything else falls back to a slate default.
+ * the chrome brand ramp with a GOLD hero accent (border + ring + glow) to mark
+ * the podium; everything else falls back to a graphite default.
  *
- * Emerald accent — mirrors `--bop-emerald` in index.css. Adjust both together.
+ * Gold accent — mirrors `--bop-gold` / `--bop-emerald` in index.css.
+ * Adjust both together.
  */
-const EMERALD = "#34d399";
+const GOLD = "#c9a227";
 
 const PALETTE: Record<
   number,
   { fill: string; stroke: string; glow: string; text: string; ring: string }
 > = {
   1: {
-    fill: "#7c818b",
-    stroke: EMERALD,
-    glow: EMERALD,
-    text: "#050506",
-    ring: EMERALD,
+    fill: "#6e6e73",
+    stroke: GOLD,
+    glow: GOLD,
+    text: "#060607",
+    ring: GOLD,
   },
   2: {
-    fill: "#181b21",
-    stroke: EMERALD,
-    glow: EMERALD,
-    text: "#eceef1",
-    ring: EMERALD,
+    fill: "#1d1d23",
+    stroke: GOLD,
+    glow: GOLD,
+    text: "#e8e8ea",
+    ring: GOLD,
   },
   3: {
-    fill: "#0a0b0d",
-    stroke: EMERALD,
-    glow: EMERALD,
-    text: EMERALD,
-    ring: EMERALD,
+    fill: "#121216",
+    stroke: GOLD,
+    glow: GOLD,
+    text: GOLD,
+    ring: GOLD,
   },
 };
 
 const DEFAULT = {
-  fill: "#101216",
-  stroke: "#7c818b",
-  glow: "#8a8f98",
-  text: "#c4c9d1",
-  ring: "#7c818b",
+  fill: "#16161b",
+  stroke: "#6e6e73",
+  glow: "#8a8a90",
+  text: "#b8b8bd",
+  ring: "#6e6e73",
 };
 
 export function RankBadge({ rank, size = 48, className }: RankBadgeProps) {

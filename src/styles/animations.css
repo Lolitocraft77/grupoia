@@ -87,6 +87,13 @@
   100% { transform: translate3d(var(--dx, 0px), 95vh, 0) rotate(540deg); opacity: 0; }
 }
 
+/* Light-sweep shimmer for premium metal surfaces (logo, premium buttons). */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-140%) skewX(-18deg); opacity: 0; }
+  38%  { opacity: 0.9; }
+  100% { transform: translateX(140%) skewX(-18deg); opacity: 0; }
+}
+
 /* Token rain — elements falling from above, filling the entire viewport. */
 @keyframes token-rain {
   0% {

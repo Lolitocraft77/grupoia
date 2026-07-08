@@ -4,31 +4,50 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ───────── Base & tokens — BOP identity ───────── */
+/* ───────── Base & tokens — Group I.A identity ─────────
+   Dark mode, dichromatic: gold (hero accent) + chrome/silver (work metal)
+   over a black canvas. Gold appears ONLY on hero accents (amounts, closed
+   sales, CTA, standout borders, recognition flash); chrome/silver is the
+   structural working metal; black is the canvas. */
 @layer base {
   :root {
-    /* Brand palette — deep black + brushed silver/platinum (monochrome) */
-    --bop-void: #050506;
-    --bop-onyx: #0a0b0d;
-    --bop-graphite: #101216;
-    --bop-slate: #181b21;
-    --bop-ash: #262a31;
-    --bop-silver: #b7bcc4;
-    --bop-platinum: #eceef1;
-    --bop-chrome: #c4c9d1;
-    --bop-chrome-light: #e9ecf0;
-    --bop-chrome-dark: #7c818b;
-    --bop-gleam: #f4f6f8;
-    --bop-mist: #8a8f98;
-    --bop-positive: #a9b3ad;
-    --bop-alert: #c79090;
+    /* Background / surface ramp (darkest → lightest) */
+    --bop-void: #060607;
+    --bop-onyx: #121216;
+    --bop-graphite: #16161b;
+    --bop-slate: #1d1d23;
+    --bop-ash: #2a2a31;
 
-    /* ── Acento esmeralda (podio + faltante). Ajustá el tono acá. ── */
-    --bop-emerald: #34d399;       /* verde neón suave, premium */
-    --bop-emerald-glow: rgba(52, 211, 153, 0.45);
+    /* Metallic text */
+    --bop-silver: #c9cace;
+    --bop-platinum: #e8e8ea;
+
+    /* Chrome (working-metal) accent ramp */
+    --bop-chrome: #b8b8bd;
+    --bop-chrome-light: #f0f0f2;
+    --bop-chrome-dark: #6e6e73;
+    --bop-gleam: #f7f7f9;   /* specular highlight (near white) */
+    --bop-mist: #8a8a90;    /* muted neutral metal */
+
+    /* Gold (hero-accent) axis */
+    --bop-gold: #c9a227;
+    --bop-gold-light: #f4e4a6;
+    --bop-gold-dark: #8a6d1b;
+
+    /* Functional states — minimal, desaturated tints only. */
+    --bop-positive: #9db3a4;    /* soft metal-green: target reached / saved */
+    --bop-alert: #c79090;       /* muted rose: errors / danger */
+
+    /* ── Acento héroe (podio + faltante) → ahora ORO. ── */
+    --bop-emerald: var(--bop-gold);
+    --bop-emerald-glow: rgba(201, 162, 39, 0.45);
+
+    /* ── Metallic gradients — the metal look is a gradient, never a flat hex. ── */
+    --grad-gold: linear-gradient(135deg, #8a6d1b, #c9a227 35%, #f4e4a6 50%, #c9a227 65%, #8a6d1b);
+    --grad-chrome: linear-gradient(135deg, #6e6e73, #b8b8bd 40%, #f0f0f2 50%, #b8b8bd 60%, #6e6e73);
 
     /* ── Fondo de billetes: intensidad ajustable (0 = oculto). ── */
-    --bills-opacity: 0.18;
+    --bills-opacity: 0.16;
     /* Velocidad de la lluvia (un ciclo = un tile de 260px). Más alto = más lento. */
     --bills-drift-duration: 40s;
 
@@ -42,46 +61,49 @@
 
     --text-primary: var(--bop-platinum);
     --text-secondary: var(--bop-silver);
-    --text-muted: rgba(236, 238, 241, 0.62);
-    --text-placeholder: rgba(236, 238, 241, 0.38);
+    --text-muted: rgba(232, 232, 234, 0.62);
+    --text-placeholder: rgba(232, 232, 234, 0.38);
     --text-on-primary: var(--bop-void);
 
     --color-primary: var(--bop-chrome);
     --color-primary-hover: var(--bop-chrome-light);
     --color-primary-active: var(--bop-chrome-dark);
-    --color-accent: var(--bop-silver);
+    --color-accent: var(--bop-gold);
     --color-success: var(--bop-positive);
     --color-danger: var(--bop-alert);
     --color-warning: var(--bop-mist);
 
-    --border-subtle: rgba(196, 201, 209, 0.12);
-    --border-default: rgba(196, 201, 209, 0.22);
-    --border-strong: rgba(196, 201, 209, 0.40);
-    --border-silver: rgba(183, 188, 196, 0.22);
+    --border-subtle: rgba(184, 184, 189, 0.12);
+    --border-default: rgba(184, 184, 189, 0.22);
+    --border-strong: rgba(184, 184, 189, 0.40);
+    --border-silver: rgba(201, 202, 206, 0.22);
+    /* Gold separators — hairline accent at ~20% opacity. */
+    --border-gold: rgba(201, 162, 39, 0.20);
+    --border-gold-strong: rgba(201, 162, 39, 0.55);
 
-    --focus-ring: 0 0 0 3px rgba(196, 201, 209, 0.28),
-      0 0 14px rgba(196, 201, 209, 0.4);
+    --focus-ring: 0 0 0 3px rgba(184, 184, 189, 0.28),
+      0 0 14px rgba(184, 184, 189, 0.4);
     --focus-ring-danger: 0 0 0 3px rgba(199, 144, 144, 0.3),
       0 0 14px rgba(199, 144, 144, 0.45);
 
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 14px;
+    /* Angular, minimal corners (4–8px). */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
 
     /* Background image + overlay (fallback as gradient if image missing) */
     --bg-image: url("/bg-bop.svg");
     --bg-overlay:
       linear-gradient(
         180deg,
-        rgba(5, 5, 6, 0.72) 0%,
-        rgba(5, 5, 6, 0.86) 60%,
-        rgba(5, 5, 6, 0.95) 100%
+        rgba(6, 6, 7, 0.72) 0%,
+        rgba(6, 6, 7, 0.86) 60%,
+        rgba(6, 6, 7, 0.95) 100%
       );
     --bg-fallback:
-      radial-gradient(ellipse at 12% 0%, rgba(196, 201, 209, 0.10) 0%, transparent 45%),
-      radial-gradient(ellipse at 88% 0%, rgba(124, 129, 139, 0.12) 0%, transparent 45%),
-      radial-gradient(ellipse at 12% 100%, rgba(196, 201, 209, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 88% 100%, rgba(124, 129, 139, 0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 16% 0%, rgba(201, 162, 39, 0.10) 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, rgba(184, 184, 189, 0.09) 0%, transparent 45%),
+      radial-gradient(ellipse at 62% 100%, rgba(110, 110, 115, 0.12) 0%, transparent 50%),
       linear-gradient(180deg, var(--bop-onyx) 0%, var(--bop-void) 100%);
   }
 
@@ -130,37 +152,105 @@
     font-family: "Inter", "Manrope", system-ui, sans-serif;
   }
 
-  /* Metallic glow text — single utility for the whole system. */
+  /* Metallic glow text — single utility for the whole system (chrome). */
   .text-chrome-glow {
     color: var(--bop-platinum);
     text-shadow:
-      0 0 4px rgba(233, 236, 240, 0.5),
-      0 0 14px rgba(196, 201, 209, 0.3);
+      0 0 4px rgba(240, 240, 242, 0.5),
+      0 0 14px rgba(184, 184, 189, 0.3);
   }
 
-  /* Engraved-style surface card. */
+  /* Metallic gradient text — clip a metal gradient into the glyphs. */
+  .text-metal-gold,
+  .text-metal-chrome {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .text-metal-gold {
+    background-image: var(--grad-gold);
+  }
+  .text-metal-chrome {
+    background-image: var(--grad-chrome);
+  }
+
+  /* Hairline metallic border (chrome working-metal). */
+  .hairline-metal {
+    border: 1px solid transparent;
+    border-image: var(--grad-chrome) 1;
+  }
+  .hairline-gold {
+    border: 1px solid transparent;
+    border-image: var(--grad-gold) 1;
+  }
+  /* Gold hero separator — ~20% opacity. */
+  .divider-gold {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--border-gold-strong) 50%,
+      transparent
+    );
+    opacity: 0.9;
+  }
+
+  /* Light-sweep shimmer for premium surfaces (logo, premium buttons).
+     Overlay is inert until hover; disabled under reduced-motion. */
+  .metal-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .metal-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 32%,
+      rgba(255, 255, 255, 0.55) 50%,
+      transparent 68%
+    );
+    transform: translateX(-140%) skewX(-18deg);
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  .metal-shimmer:hover::after {
+    animation: shimmer-sweep 0.9s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .metal-shimmer:hover::after {
+      animation: none;
+    }
+  }
+
+  /* Engraved-style surface card. Angular corners, chrome hairline. */
   .bop-card {
     background:
-      linear-gradient(180deg, rgba(24, 27, 33, 0.78) 0%, rgba(10, 11, 13, 0.92) 100%);
+      linear-gradient(180deg, rgba(29, 29, 35, 0.78) 0%, rgba(18, 18, 22, 0.92) 100%);
     border: 1.5px solid var(--border-default);
     border-radius: var(--radius-md);
     box-shadow:
-      0 0 0 1px rgba(183, 188, 196, 0.06),
-      inset 0 0 0 1px rgba(183, 188, 196, 0.05),
-      0 6px 22px rgba(5, 5, 6, 0.65);
+      0 0 0 1px rgba(201, 202, 206, 0.06),
+      inset 0 0 0 1px rgba(201, 202, 206, 0.05),
+      0 6px 22px rgba(6, 6, 7, 0.65);
     position: relative;
   }
-  /* Ornamental corners — engraved feel. */
+  /* Ornamental corners — engraved feel, GOLD hero accent. */
   .bop-card::before,
   .bop-card::after {
     content: "";
     position: absolute;
-    width: 28px;
-    height: 28px;
-    border-color: var(--bop-chrome);
+    width: 26px;
+    height: 26px;
+    border-color: var(--bop-gold);
     border-style: solid;
     border-width: 0;
     pointer-events: none;
+    opacity: 0.85;
   }
   .bop-card::before {
     top: -2px;
@@ -177,7 +267,7 @@
     border-bottom-right-radius: var(--radius-md);
   }
 
-  /* Decorative frame: dashed silver inner stroke. */
+  /* Decorative frame: dashed gold inner stroke (~20% separator). */
   .ornament-frame {
     position: relative;
   }
@@ -185,8 +275,8 @@
     content: "";
     position: absolute;
     inset: 6px;
-    border: 1px dashed var(--border-silver);
-    border-radius: calc(var(--radius-md) - 4px);
+    border: 1px dashed var(--border-gold);
+    border-radius: calc(var(--radius-md) - 2px);
     pointer-events: none;
   }
 
@@ -202,7 +292,7 @@
   }
   .field-label[data-required="true"]::after {
     content: " *";
-    color: var(--color-primary);
+    color: var(--color-accent);
   }
   .field-input,
   .field-select,
@@ -245,7 +335,7 @@
   .field-input:not(:placeholder-shown):not(:focus),
   .field-textarea:not(:placeholder-shown):not(:focus) {
     border-left-width: 4px;
-    border-left-color: var(--bop-silver);
+    border-left-color: var(--bop-gold);
     padding-left: 11px;
   }
   .field-input:disabled,
@@ -292,7 +382,7 @@
     color: var(--text-muted);
   }
   .field-select {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><path d='M3 5l4 4 4-4' stroke='%23b7bcc4' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><path d='M3 5l4 4 4-4' stroke='%23c9cace' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
     padding-right: 36px;
@@ -334,35 +424,95 @@
     outline: none;
     box-shadow: var(--focus-ring);
   }
+  /* Primary = chrome working-metal gradient + light-sweep shimmer. */
   .btn-primary {
-    background: linear-gradient(180deg, #e9ecf0 0%, #c4c9d1 50%, #7c818b 100%);
+    position: relative;
+    overflow: hidden;
+    background: var(--grad-chrome);
     color: var(--bop-void);
-    border: 1px solid #f0f2f4;
+    border: 1px solid var(--bop-chrome-light);
     box-shadow:
-      0 4px 0 #3a3d44,
-      0 6px 22px rgba(196, 201, 209, 0.22);
+      0 4px 0 #2a2a31,
+      0 6px 22px rgba(184, 184, 189, 0.22);
+  }
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 32%,
+      rgba(255, 255, 255, 0.6) 50%,
+      transparent 68%
+    );
+    transform: translateX(-140%) skewX(-18deg);
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  .btn-primary:hover:not(:disabled)::after {
+    animation: shimmer-sweep 0.9s ease;
   }
   .btn-primary:hover:not(:disabled) {
     transform: translateY(-1px);
     box-shadow:
-      0 4px 0 #3a3d44,
-      0 8px 32px rgba(196, 201, 209, 0.34);
+      0 4px 0 #2a2a31,
+      0 8px 32px rgba(184, 184, 189, 0.34);
   }
   .btn-primary:active:not(:disabled) {
     transform: translateY(2px);
-    box-shadow: 0 1px 0 #3a3d44;
+    box-shadow: 0 1px 0 #2a2a31;
+  }
+  /* Premium = GOLD hero-accent gradient + shimmer. Reserve for hero CTAs. */
+  .btn-premium {
+    position: relative;
+    overflow: hidden;
+    background: var(--grad-gold);
+    color: var(--bop-void);
+    border: 1px solid var(--bop-gold-light);
+    box-shadow:
+      0 4px 0 #3a2f0c,
+      0 6px 24px rgba(201, 162, 39, 0.30);
+  }
+  .btn-premium::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 32%,
+      rgba(255, 255, 255, 0.65) 50%,
+      transparent 68%
+    );
+    transform: translateX(-140%) skewX(-18deg);
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  .btn-premium:hover:not(:disabled)::after {
+    animation: shimmer-sweep 0.9s ease;
+  }
+  .btn-premium:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow:
+      0 4px 0 #3a2f0c,
+      0 8px 34px rgba(201, 162, 39, 0.44);
+  }
+  .btn-premium:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #3a2f0c;
   }
   .btn-secondary {
-    background: rgba(196, 201, 209, 0.06);
+    background: rgba(184, 184, 189, 0.06);
     color: var(--bop-chrome-light);
     border: 1.5px solid var(--border-strong);
   }
   .btn-secondary:hover:not(:disabled) {
-    background: rgba(196, 201, 209, 0.14);
+    background: rgba(184, 184, 189, 0.14);
     border-color: var(--bop-chrome);
   }
   .btn-secondary:active:not(:disabled) {
-    background: rgba(196, 201, 209, 0.2);
+    background: rgba(184, 184, 189, 0.2);
   }
   .btn-danger {
     background: rgba(199, 144, 144, 0.05);
@@ -380,7 +530,7 @@
   }
   .btn-ghost:hover:not(:disabled) {
     color: var(--text-primary);
-    background: rgba(196, 201, 209, 0.06);
+    background: rgba(184, 184, 189, 0.06);
   }
   .btn-sm {
     padding: 6px 12px;
@@ -398,7 +548,7 @@
     position: fixed;
     inset: 0;
     z-index: 50;
-    background: rgba(5, 5, 6, 0.78);
+    background: rgba(6, 6, 7, 0.78);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -411,11 +561,11 @@
     display: flex;
     flex-direction: column;
     background:
-      linear-gradient(180deg, rgba(24, 27, 33, 0.96) 0%, rgba(10, 11, 13, 0.98) 100%);
+      linear-gradient(180deg, rgba(29, 29, 35, 0.96) 0%, rgba(18, 18, 22, 0.98) 100%);
     border: 1.5px solid var(--border-strong);
     border-radius: var(--radius-lg);
     box-shadow:
-      0 0 0 1px rgba(196, 201, 209, 0.18),
+      0 0 0 1px rgba(184, 184, 189, 0.18),
       0 24px 64px rgba(0, 0, 0, 0.65);
     overflow: hidden;
     position: relative;
@@ -448,7 +598,7 @@
   .modal-footer {
     padding: 14px 24px;
     border-top: 1px solid var(--border-subtle);
-    background: rgba(5, 5, 6, 0.6);
+    background: rgba(6, 6, 7, 0.6);
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -482,12 +632,12 @@
   }
   .modal-body::-webkit-scrollbar-thumb,
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(196, 201, 209, 0.25);
+    background: rgba(184, 184, 189, 0.25);
     border-radius: 999px;
   }
   .modal-body::-webkit-scrollbar-thumb:hover,
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: rgba(196, 201, 209, 0.45);
+    background: rgba(184, 184, 189, 0.45);
   }
 
   /* Tables */
@@ -501,7 +651,7 @@
   .data-table thead th {
     position: sticky;
     top: 0;
-    background: rgba(5, 5, 6, 0.92);
+    background: rgba(6, 6, 7, 0.92);
     color: var(--bop-chrome-light);
     font-size: 11px;
     font-weight: 700;
@@ -518,10 +668,10 @@
     vertical-align: middle;
   }
   .data-table tbody tr:nth-child(even) td {
-    background: rgba(24, 27, 33, 0.4);
+    background: rgba(29, 29, 35, 0.4);
   }
   .data-table tbody tr:hover td {
-    background: rgba(196, 201, 209, 0.07);
+    background: rgba(184, 184, 189, 0.07);
   }
 
   /* Badges */
@@ -537,12 +687,12 @@
     letter-spacing: 0.08em;
   }
   .badge-success {
-    background: rgba(169, 179, 173, 0.12);
+    background: rgba(157, 179, 164, 0.12);
     color: var(--color-success);
-    border: 1px solid rgba(169, 179, 173, 0.45);
+    border: 1px solid rgba(157, 179, 164, 0.45);
   }
   .badge-muted {
-    background: rgba(236, 238, 241, 0.05);
+    background: rgba(232, 232, 234, 0.05);
     color: var(--text-muted);
     border: 1px solid var(--border-subtle);
   }
@@ -562,7 +712,7 @@
   /* Background pattern for the admin & login pages. */
   .bop-pattern {
     background-image:
-      linear-gradient(180deg, rgba(5, 5, 6, 0.7), rgba(5, 5, 6, 0.95)),
+      linear-gradient(180deg, rgba(6, 6, 7, 0.7), rgba(6, 6, 7, 0.95)),
       url("/bg-bop.svg");
     background-size: cover;
     background-position: center;

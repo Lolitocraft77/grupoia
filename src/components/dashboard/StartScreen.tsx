@@ -104,7 +104,7 @@ export function StartScreen({ onEnter }: StartScreenProps) {
         transition={{ delay: 0.45, duration: 0.3 }}
         className="absolute bottom-10 font-sans text-xs tracking-[0.5em] text-bop-chrome/50"
       >
-        BUSINESS OPERATIONS 12:12
+        {BRAND.name.toUpperCase()}
       </motion.p>
     </motion.div>
   );

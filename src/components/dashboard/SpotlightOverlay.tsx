@@ -31,10 +31,14 @@ interface SpotlightOverlayProps {
  */
 type Phase = "flash" | "stream" | "reveal" | "close" | "done";
 
-/** Champagne accent — low saturation (not yellow), used only as a touch of light. */
-const CHAMPAGNE_LIGHT = "#e7d3a1";
-const CHAMPAGNE = "#c9ad74";
-const CHAMPAGNE_DEEP = "#9c7f4a";
+/** Gold hero accent (recognition) + platinum — particles mix the two. */
+const GOLD_LIGHT = "#f4e4a6";
+const GOLD = "#c9a227";
+const GOLD_DEEP = "#8a6d1b";
+const PLATINUM = "#e8e8ea";
+/** Gold metallic gradient — for the counter + amount (clipped into glyphs). */
+const GOLD_GRADIENT =
+  "linear-gradient(135deg, #8a6d1b, #c9a227 35%, #f4e4a6 50%, #c9a227 65%, #8a6d1b)";
 
 /** Heuristic for low-power devices: fewer tokens. */
 function useReducedFx() {
@@ -146,36 +150,36 @@ function Token({ size, prime }: { size: number; prime?: boolean }) {
     >
       <defs>
         <linearGradient id={`tk-body-${s}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#20242b" />
-          <stop offset="100%" stopColor="#0a0b0d" />
+          <stop offset="0%" stopColor="#1d1d23" />
+          <stop offset="100%" stopColor="#121216" />
         </linearGradient>
         <linearGradient id={`tk-champ-${s}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={CHAMPAGNE_LIGHT} />
-          <stop offset="55%" stopColor={CHAMPAGNE} />
-          <stop offset="100%" stopColor={CHAMPAGNE_DEEP} />
+          <stop offset="0%" stopColor={GOLD_LIGHT} />
+          <stop offset="55%" stopColor={GOLD} />
+          <stop offset="100%" stopColor={GOLD_DEEP} />
         </linearGradient>
       </defs>
 
-      {/* Body + silver frame */}
-      <rect x="1" y="1" width="198" height="88" rx="6" fill={`url(#tk-body-${s})`} stroke="#b7bcc4" strokeOpacity="0.55" strokeWidth="1.5" />
-      <rect x="6" y="6" width="188" height="78" rx="4" fill="none" stroke="#b7bcc4" strokeOpacity="0.28" strokeDasharray="2 3" />
+      {/* Body + platinum frame */}
+      <rect x="1" y="1" width="198" height="88" rx="6" fill={`url(#tk-body-${s})`} stroke={PLATINUM} strokeOpacity="0.55" strokeWidth="1.5" />
+      <rect x="6" y="6" width="188" height="78" rx="4" fill="none" stroke={PLATINUM} strokeOpacity="0.28" strokeDasharray="2 3" />
 
       {/* Static diagonal metallic sheen — catches light as the token rotates */}
       <polygon points="40,1 78,1 30,89 -8,89" fill="#ffffff" fillOpacity="0.06" />
 
-      {/* Champagne medallion */}
+      {/* Gold medallion */}
       {prime && <circle cx="100" cy="45" r="21" fill={`url(#tk-champ-${s})`} fillOpacity="0.14" />}
       <circle cx="100" cy="45" r="22" fill="none" stroke={`url(#tk-champ-${s})`} strokeWidth="2" />
-      <circle cx="100" cy="45" r="16" fill="none" stroke="#b7bcc4" strokeOpacity="0.4" />
+      <circle cx="100" cy="45" r="16" fill="none" stroke={PLATINUM} strokeOpacity="0.4" />
       <text x="100" y="53" textAnchor="middle" fontFamily="Jost, sans-serif" fontSize="22" fontWeight="800" fill={`url(#tk-champ-${s})`}>
         $
       </text>
 
-      {/* Corner denominations — silver */}
-      <text x="14" y="22" fontFamily="Jost, sans-serif" fontSize="13" fontWeight="700" fill="#b7bcc4" fillOpacity="0.8">
+      {/* Corner denominations — platinum */}
+      <text x="14" y="22" fontFamily="Jost, sans-serif" fontSize="13" fontWeight="700" fill={PLATINUM} fillOpacity="0.8">
         {prime ? "1000" : "100"}
       </text>
-      <text x="186" y="80" textAnchor="end" fontFamily="Jost, sans-serif" fontSize="13" fontWeight="700" fill="#b7bcc4" fillOpacity="0.8">
+      <text x="186" y="80" textAnchor="end" fontFamily="Jost, sans-serif" fontSize="13" fontWeight="700" fill={PLATINUM} fillOpacity="0.8">
         {prime ? "1000" : "100"}
       </text>
     </svg>
@@ -240,7 +244,7 @@ function Sparkle({ enabled }: { enabled: boolean }) {
               top: "26%",
               width: p.size,
               height: p.size,
-              background: p.champ ? CHAMPAGNE_LIGHT : "#d7dbe0",
+              background: p.champ ? GOLD_LIGHT : PLATINUM,
               animationDelay: `${p.delay}s`,
               animationDuration: `${p.duration}s`,
               ["--dx" as string]: `${p.dx}vw`,
@@ -364,11 +368,11 @@ export function SpotlightOverlay({
           transition={{ duration: 0.4 }}
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(24, 27, 33, 0.94) 0%, rgba(5, 5, 6, 0.98) 75%)",
+              "radial-gradient(ellipse at center, rgba(29, 29, 35, 0.94) 0%, rgba(6, 6, 7, 0.98) 75%)",
           }}
           className="fixed inset-0 z-50 flex items-start justify-center overflow-hidden"
         >
-          {/* ── Phase 1: brief silver flash (opacity only) ───────────── */}
+          {/* ── Phase 1: brief GOLD flash (opacity only) ───────────── */}
           <AnimatePresence>
             {phase === "flash" && (
               <motion.div
@@ -379,7 +383,7 @@ export function SpotlightOverlay({
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(ellipse at center 55%, #ffffff 0%, #e9ecf0 30%, #c4c9d1 55%, transparent 80%)",
+                    "radial-gradient(ellipse at center 55%, #ffffff 0%, #f4e4a6 30%, #c9a227 55%, transparent 80%)",
                   mixBlendMode: "screen",
                 }}
                 aria-hidden
@@ -387,12 +391,12 @@ export function SpotlightOverlay({
             )}
           </AnimatePresence>
 
-          {/* Global champagne ambient glow — ONE cheap layer (opacity only) */}
+          {/* Global gold ambient glow — ONE cheap layer (opacity only) */}
           <motion.div
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse at center 60%, rgba(201,173,116,0.20) 0%, rgba(201,173,116,0.06) 38%, transparent 72%)",
+                "radial-gradient(ellipse at center 60%, rgba(201,162,39,0.20) 0%, rgba(201,162,39,0.06) 38%, transparent 72%)",
               mixBlendMode: "screen",
             }}
             animate={{ opacity: glowing ? 1 : phase === "close" ? 0.4 : 0 }}
@@ -405,7 +409,7 @@ export function SpotlightOverlay({
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse at center, transparent 38%, rgba(5,5,6,0.55) 82%, rgba(5,5,6,0.85) 100%)",
+                "radial-gradient(ellipse at center, transparent 38%, rgba(6,6,7,0.55) 82%, rgba(6,6,7,0.85) 100%)",
             }}
             animate={{ opacity: phase === "flash" ? 0 : 0.7 }}
             transition={{ duration: 0.5 }}
@@ -414,12 +418,12 @@ export function SpotlightOverlay({
 
           {/* Decorative frame */}
           <div
-            className="pointer-events-none absolute inset-6 rounded-xl border border-bop-chrome/25"
+            className="pointer-events-none absolute inset-6 rounded-lg border border-bop-chrome/25"
             aria-hidden
           >
             <div
-              className="absolute inset-3 rounded-lg border border-dashed"
-              style={{ borderColor: "rgba(183,188,196,0.16)" }}
+              className="absolute inset-3 rounded border border-dashed"
+              style={{ borderColor: "rgba(201,162,39,0.20)" }}
             />
           </div>
 
@@ -446,8 +450,13 @@ export function SpotlightOverlay({
               <h2
                 className="font-display text-4xl uppercase tracking-[0.22em] sm:text-5xl"
                 style={{
-                  color: "#eceef1",
-                  textShadow: "0 0 10px rgba(201,173,116,0.45), 0 0 28px rgba(196,201,209,0.3)",
+                  backgroundImage: GOLD_GRADIENT,
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  color: "transparent",
+                  filter:
+                    "drop-shadow(0 0 10px rgba(201,162,39,0.5)) drop-shadow(0 0 28px rgba(201,162,39,0.28))",
                 }}
               >
                 VENTA CERRADA
@@ -462,8 +471,8 @@ export function SpotlightOverlay({
               <p
                 className="font-display text-2xl uppercase tracking-[0.18em] sm:text-3xl"
                 style={{
-                  color: "#eceef1",
-                  textShadow: "0 0 12px rgba(196,201,209,0.35)",
+                  color: "#e8e8ea",
+                  textShadow: "0 0 12px rgba(184,184,189,0.35)",
                 }}
               >
                 {event.agent.name}
@@ -473,11 +482,10 @@ export function SpotlightOverlay({
               <motion.div
                 className="rounded-lg border-2 px-8 py-3 font-digital text-5xl sm:text-6xl"
                 style={{
-                  borderColor: CHAMPAGNE,
-                  background: "rgba(5,5,6,0.85)",
-                  color: "#eceef1",
-                  textShadow: "0 0 10px rgba(201,173,116,0.5)",
-                  boxShadow: "0 0 28px rgba(201,173,116,0.18)",
+                  borderColor: GOLD,
+                  background: "rgba(6,6,7,0.85)",
+                  color: "#e8e8ea",
+                  boxShadow: "0 0 28px rgba(201,162,39,0.22)",
                 }}
                 animate={
                   counterPunched
@@ -490,24 +498,35 @@ export function SpotlightOverlay({
                     : { duration: 0.3 }
                 }
               >
-                {counterActive ? (
-                  <CountUp
-                    value={event.amount}
-                    durationMs={counterDuration}
-                    onComplete={() => {
-                      setCounterPunched(true);
-                      if (counterPunchTimer.current) {
-                        window.clearTimeout(counterPunchTimer.current);
-                      }
-                      counterPunchTimer.current = window.setTimeout(
-                        () => setCounterPunched(false),
-                        800,
-                      );
-                    }}
-                  />
-                ) : (
-                  <span>+{formatCurrency(0)}</span>
-                )}
+                {/* Gold metallic amount — gradient clipped into the digits. */}
+                <span
+                  style={{
+                    backgroundImage: GOLD_GRADIENT,
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    color: "transparent",
+                  }}
+                >
+                  {counterActive ? (
+                    <CountUp
+                      value={event.amount}
+                      durationMs={counterDuration}
+                      onComplete={() => {
+                        setCounterPunched(true);
+                        if (counterPunchTimer.current) {
+                          window.clearTimeout(counterPunchTimer.current);
+                        }
+                        counterPunchTimer.current = window.setTimeout(
+                          () => setCounterPunched(false),
+                          800,
+                        );
+                      }}
+                    />
+                  ) : (
+                    <span>+{formatCurrency(0)}</span>
+                  )}
+                </span>
               </motion.div>
             </motion.div>
           )}
@@ -535,24 +554,24 @@ function AgentSeal({
       animate={glowing ? { scale: [1, 1.03, 1] } : { scale: 1 }}
       transition={{ duration: 1.4, repeat: glowing ? Infinity : 0, ease: "easeInOut" }}
     >
-      {/* Conic silver ring with a champagne stop */}
+      {/* Conic chrome ring with a gold stop */}
       <div
         className="absolute inset-0 rounded-full"
         style={{
           background:
-            "conic-gradient(from 0deg, rgba(196,201,209,0.6), rgba(201,173,116,0.55), rgba(124,129,139,0.6), rgba(196,201,209,0.6))",
+            "conic-gradient(from 0deg, rgba(184,184,189,0.6), rgba(201,162,39,0.55), rgba(110,110,115,0.6), rgba(184,184,189,0.6))",
           padding: 5,
         }}
       >
         <div
           className="h-full w-full rounded-full"
-          style={{ background: "linear-gradient(180deg, #0a0b0d 0%, #050506 100%)" }}
+          style={{ background: "linear-gradient(180deg, #121216 0%, #060607 100%)" }}
         />
       </div>
       {/* Dashed inner ring — rotates via transform (cheap) */}
       <motion.div
         className="absolute inset-2 rounded-full"
-        style={{ border: "1px dashed rgba(201,173,116,0.4)" }}
+        style={{ border: "1px dashed rgba(201,162,39,0.4)" }}
         animate={glowing ? { rotate: 360 } : { rotate: 0 }}
         transition={{ duration: 18, repeat: glowing ? Infinity : 0, ease: "linear" }}
       />

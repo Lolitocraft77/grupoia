@@ -50,7 +50,7 @@ export function AmbientBackground() {
         style={{
           top: "-10%",
           background:
-            "linear-gradient(180deg, transparent 0%, rgba(196,201,209,0.05) 50%, transparent 100%)",
+            "linear-gradient(180deg, transparent 0%, rgba(184,184,189,0.05) 50%, transparent 100%)",
           mixBlendMode: "screen",
         }}
       />
@@ -63,8 +63,8 @@ export function AmbientBackground() {
             bottom: "-10vh",
             width: `${p.size}px`,
             height: `${p.size}px`,
-            backgroundColor: p.hue === "chrome" ? "#c4c9d1" : "#b7bcc4",
-            boxShadow: `0 0 ${p.size * 2}px ${p.hue === "chrome" ? "#c4c9d1" : "#b7bcc4"}`,
+            backgroundColor: p.hue === "chrome" ? "#b8b8bd" : "#c9cace",
+            boxShadow: `0 0 ${p.size * 2}px ${p.hue === "chrome" ? "#b8b8bd" : "#c9cace"}`,
             opacity: 0.28,
             animationDuration: `${p.duration}s`,
             animationDelay: `${p.delay}s`,

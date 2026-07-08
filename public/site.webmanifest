@@ -1,0 +1,23 @@
+{
+  "name": "Group I.A",
+  "short_name": "Group I.A",
+  "description": "Evolucionamos con la IA — panel de operaciones y ventas en tiempo real.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060607",
+  "theme_color": "#060607",
+  "icons": [
+    {
+      "src": "/logos/group-ia.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
