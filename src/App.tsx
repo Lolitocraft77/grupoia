@@ -4,12 +4,20 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
+import { DashboardGate } from "./components/dashboard/DashboardGate";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route
+          path="/"
+          element={
+            <DashboardGate>
+              <Index />
+            </DashboardGate>
+          }
+        />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route
           path="/admin"

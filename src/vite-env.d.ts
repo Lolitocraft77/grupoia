@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_BRAND_LOGO?: string;
   readonly VITE_BRAND_TAGLINE?: string;
   readonly VITE_BRAND_MONOGRAM?: string;
+  readonly VITE_DASHBOARD_PASSWORD?: string;
 }
 
 interface ImportMeta {
