@@ -1,8 +1,8 @@
 # Supabase project configuration.
 # See: https://supabase.com/docs/reference/cli/config
 
-# Replace with your own project ref after `supabase link --project-ref <ref>`.
-project_id = "your-project-ref"
+# Supabase project ref (grupoia).
+project_id = "mcunzjvyducymqfxcgfi"
 
 [functions.google-sheets-proxy]
 # Public endpoint — called by the dashboard without a session (also from incognito).

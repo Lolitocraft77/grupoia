@@ -19,3 +19,7 @@ supabase/.temp/
 # Installer / build junk
 *.deb
 *.tsbuildinfo
+
+# tsc -b emits these from vite.config.ts
+vite.config.js
+vite.config.d.ts

@@ -1,4 +1,4 @@
-# Business Operations 12:12
+# Group I.A — Dashboard de ventas
 
 Dashboard de ventas en tiempo real con identidad **monocromática premium**: negro profundo, plata cepillada y platino, tipografía limpia en mayúsculas con tracking amplio. Cuando un agente cierra una venta, se dispara una **animación de reconocimiento** con foto, monto, partículas con física suave y 3 SFX (arranque mecánico → ráfaga → stinger de confirmación).
 
@@ -32,7 +32,7 @@ Si no hay Supabase configurado todavía, el dashboard cae a `mockTeams` y la ani
 1. **Crear proyecto** en [supabase.com](https://supabase.com).
 2. **Copiar credenciales** desde *Project Settings → API*:
    - `VITE_SUPABASE_URL` → URL del proyecto.
-   - `VITE_SUPABASE_ANON_KEY` → anon/public key.
+   - `VITE_SUPABASE_ANON_KEY` → publishable key (`sb_publishable_...`) o la anon legacy.
    Pegar en `.env`.
 3. **Correr la migración inicial** (crea tablas, RLS, buckets):
    - Vía Supabase CLI: `supabase db push`
@@ -77,6 +77,23 @@ Si tu Sheet aún no está publicado:
    - *Ejecutar como:* yo
    - *Quién tiene acceso:* **cualquier persona**
 4. Copiar la URL `https://script.google.com/macros/s/.../exec` y pegarla en el `supabase secrets set APPS_SCRIPT_URL=...` del paso 6 de arriba.
+
+## 3.1) Verificar la conexión Sheet → Supabase
+
+```bash
+npm run check:sheet                     # tablas + Edge Function
+npm run check:sheet -- "<url-apps-script>"  # además prueba el Apps Script directo
+```
+
+| Error | Causa | Solución |
+|---|---|---|
+| `No item with the given ID could be found` | El Apps Script del secret `APPS_SCRIPT_URL` no puede abrir su Sheet (Sheet borrado, copiado, script standalone o `SPREADSHEET_ID` incorrecto) | Abrí **tu** Sheet → *Extensiones → Apps Script*, pegá `Code.gs`, *Nueva implementación*, y actualizá el secret con la URL nueva |
+| `APPS_SCRIPT_URL not configured` | Falta el secret | `supabase secrets set APPS_SCRIPT_URL=...` |
+| HTTP 404 en la función | Edge Function no desplegada | `supabase functions deploy google-sheets-proxy --no-verify-jwt` |
+| `Falta hoja 'Tabla'` / `'Equipos'` / `'Base_Agregada'` | El Sheet no tiene las pestañas esperadas | Renombrá las pestañas o ajustá `Code.gs` |
+| Apps Script devuelve HTML | La implementación no es pública | *Quién tiene acceso: cualquier persona* |
+
+> Los nombres de mesa del Sheet deben coincidir con `teams.id` / `teams.name` en Supabase para que se crucen bien.
 
 ## 4) Desplegar a producción
 

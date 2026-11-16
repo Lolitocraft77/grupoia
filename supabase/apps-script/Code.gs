@@ -3,17 +3,19 @@
  *
  * Devuelve { teams, newSales } para el Edge Function google-sheets-proxy.
  *
- * Deployment activo (web app):
- *   ID:  AKfycbwKp8YrPbAQjApOnMhClk7DSVNLp6y4BzepykCAZqW13AMeuKubgfOXpdUFV1lmVtm6Dg
- *   URL: https://script.google.com/macros/s/AKfycbwKp8YrPbAQjApOnMhClk7DSVNLp6y4BzepykCAZqW13AMeuKubgfOXpdUFV1lmVtm6Dg/exec
+ * INSTALACIÓN (recomendada): abrí TU Sheet → Extensiones → Apps Script,
+ * pegá este archivo y desplegalo como Aplicación web (Ejecutar como: yo,
+ * Acceso: cualquier persona). Así el script queda VINCULADO al Sheet.
  *
- * Esa URL se inyecta como secret de la Edge Function:
- *   supabase secrets set APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwKp8YrPbAQjApOnMhClk7DSVNLp6y4BzepykCAZqW13AMeuKubgfOXpdUFV1lmVtm6Dg/exec"
+ * Si en cambio usás un proyecto standalone (script.google.com → Nuevo
+ * proyecto), completá SPREADSHEET_ID abajo con el ID del Sheet (lo que va entre
+ * /d/ y /edit en la URL). El error "No item with the given ID could be found"
+ * significa que ese ID no existe o que la cuenta que despliega no tiene acceso.
+ *
+ * Después de cada "Nueva implementación" Google genera una URL nueva:
+ *   supabase secrets set APPS_SCRIPT_URL="https://script.google.com/macros/s/<ID>/exec"
  *   supabase functions deploy google-sheets-proxy --no-verify-jwt
- *
- * Si recreás el deployment (Implementar → Nueva implementación), Google genera
- * un ID nuevo. En ese caso: actualizá la URL acá, en el README, y volvé a correr
- * `supabase secrets set APPS_SCRIPT_URL=...` con la URL nueva.
+ * (o en el Dashboard: Edge Functions → Secrets → APPS_SCRIPT_URL)
  *
  * FUENTES DE DATOS:
  *
@@ -41,12 +43,33 @@
 
 var TEAM_GOAL = 50000;
 
+/** Opcional: ID del Sheet. Vacío = usar el Sheet al que está vinculado el script. */
+var SPREADSHEET_ID = "";
+
+function openSpreadsheet() {
+  if (SPREADSHEET_ID) {
+    try {
+      return SpreadsheetApp.openById(SPREADSHEET_ID);
+    } catch (e) {
+      throw new Error(
+        "No pude abrir SPREADSHEET_ID '" + SPREADSHEET_ID + "'. Verificá el ID y " +
+        "que la cuenta que despliega el script tenga acceso. (" + e.message + ")"
+      );
+    }
+  }
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) {
+    throw new Error(
+      "Script no vinculado a un Sheet: crealo desde Extensiones → Apps Script " +
+      "o completá SPREADSHEET_ID"
+    );
+  }
+  return ss;
+}
+
 function doGet() {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    if (!ss) {
-      return jsonResponse({ error: "Script no vinculado a un Sheet" });
-    }
+    var ss = openSpreadsheet();
 
     console.log("[BOP-GS] doGet → leyendo:", ss.getName());
 
@@ -305,13 +328,14 @@ function toNumber(v) {
  * Después abrí el Registro de ejecución y mirá los console.log.
  */
 function test() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  console.log("[BOP-GS] Spreadsheet name:", ss ? ss.getName() : "NULL");
-
-  if (!ss) {
-    console.log("[BOP-GS] ERROR: el script no está vinculado a un Sheet.");
+  var ss;
+  try {
+    ss = openSpreadsheet();
+  } catch (e) {
+    console.log("[BOP-GS] ERROR:", e.message);
     return;
   }
+  console.log("[BOP-GS] Spreadsheet name:", ss.getName());
 
   var sheetNames = ss.getSheets().map(function (s) { return s.getName(); });
   console.log("[BOP-GS] Hojas existentes:", JSON.stringify(sheetNames));
