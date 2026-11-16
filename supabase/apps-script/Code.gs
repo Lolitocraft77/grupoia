@@ -214,12 +214,18 @@ function processTeamsData(dataTabla, dataEquipos) {
  */
 function processNewSalesFromBaseAgregada(data, dataForm) {
   // 1) Lookup (agente|fecha) → último Timestamp de Form Responses 1.
+  // Las columnas se buscan por encabezado (fila 1) porque el formulario puede
+  // tener columnas extra; si no se encuentran, se usan A/B/C.
   var tsMap = {};
+  var hdr = (dataForm && dataForm[0]) || [];
+  var colTs = findCol(hdr, /marca temporal|timestamp/i, 0);
+  var colFecha = findCol(hdr, /fecha/i, 1);
+  var colAgt = findCol(hdr, /agente/i, 2);
   for (var f = 1; f < (dataForm || []).length; f++) {
     var fr = dataForm[f];
-    var ts = fr[0];        // col A: Timestamp
-    var fechaDep = fr[1];  // col B: Fecha de deposito
-    var agt = fr[2];       // col C: Agente
+    var ts = fr[colTs];         // Timestamp de envío del formulario
+    var fechaDep = fr[colFecha]; // Fecha de deposito
+    var agt = fr[colAgt];        // Agente
     if (!ts || !agt) continue;
     var agtStr = agt.toString().trim();
     if (!agtStr) continue;
@@ -276,6 +282,14 @@ function processNewSalesFromBaseAgregada(data, dataForm) {
   }
 
   return sales;
+}
+
+/** Índice de la primera columna cuyo encabezado coincide con `re`, o `fallback`. */
+function findCol(headers, re, fallback) {
+  for (var c = 0; c < headers.length; c++) {
+    if (headers[c] != null && re.test(headers[c].toString())) return c;
+  }
+  return fallback;
 }
 
 /**
@@ -343,6 +357,14 @@ function test() {
   console.log("[BOP-GS] Hoja 'Tabla':", ss.getSheetByName("Tabla") ? "OK" : "NO ENCONTRADA");
   console.log("[BOP-GS] Hoja 'Equipos':", ss.getSheetByName("Equipos") ? "OK" : "NO ENCONTRADA");
   console.log("[BOP-GS] Hoja 'Base_Agregada':", ss.getSheetByName("Base_Agregada") ? "OK" : "NO ENCONTRADA");
+
+  var form = ss.getSheetByName("Form Responses 1");
+  if (form) {
+    var h = form.getRange(1, 1, 1, form.getLastColumn()).getValues()[0];
+    console.log("[BOP-GS] Form Responses 1 encabezados:", JSON.stringify(h));
+    console.log("[BOP-GS] Columnas usadas → timestamp:", findCol(h, /marca temporal|timestamp/i, 0),
+      "fecha:", findCol(h, /fecha/i, 1), "agente:", findCol(h, /agente/i, 2));
+  }
 
   // Ejecutar el doGet completo y mostrar resultado.
   var result = doGet();
